@@ -1,0 +1,109 @@
+Method,Project,Concepts,Accuracy,Time
+Barnett et al.,Commandline,-1,0.105,0.091
+Barnett et al.,Commandline,2,0.109,0.081
+Barnett et al.,Commandline,3,0.066,8.566
+Barnett et al.,CommonMark,-1,0.13,0.58
+Barnett et al.,CommonMark,2,0.13,0.58
+Barnett et al.,Hangfire,-1,0.104,0.682
+Barnett et al.,Hangfire,2,0.103,0.52
+Barnett et al.,Hangfire,3,0.109,1.695
+Barnett et al.,Humanizer,-1,0.086,0.106
+Barnett et al.,Humanizer,2,0.086,0.112
+Barnett et al.,Humanizer,3,0.111,0.042
+Barnett et al.,Lean,-1,0.083,0.777
+Barnett et al.,Lean,2,0.077,0.744
+Barnett et al.,Lean,3,0.093,1.427
+Barnett et al.,Nancy,-1,0.051,1.058
+Barnett et al.,Nancy,2,0.053,0.9
+Barnett et al.,Nancy,3,0.035,2.078
+Barnett et al.,Newtonsoft.Json,-1,0.115,1.252
+Barnett et al.,Newtonsoft.Json,2,0.118,1.297
+Barnett et al.,Newtonsoft.Json,3,0.093,0.954
+Barnett et al.,Ninject,-1,0.082,0.624
+Barnett et al.,Ninject,2,0.082,0.624
+Barnett et al.,Overall,-1,0.083,0.566
+Barnett et al.,Overall,2,0.083,0.486
+Barnett et al.,Overall,3,0.077,1.592
+Barnett et al.,RestSharp,-1,0.111,0.567
+Barnett et al.,RestSharp,2,0.106,0.653
+Barnett et al.,RestSharp,3,0.111,0.217
+Heddle (δ-NFG + WL),Commandline,-1,0.818,1.045
+Heddle (δ-NFG + WL),Commandline,2,0.818,0.847
+Heddle (δ-NFG + WL),Commandline,3,0.923,182.618
+Heddle (δ-NFG + WL),CommonMark,-1,0.698,14.948
+Heddle (δ-NFG + WL),CommonMark,2,0.698,14.948
+Heddle (δ-NFG + WL),Hangfire,-1,0.794,11.639
+Heddle (δ-NFG + WL),Hangfire,2,0.857,8.059
+Heddle (δ-NFG + WL),Hangfire,3,0.681,45.289
+Heddle (δ-NFG + WL),Humanizer,-1,0.815,4.582
+Heddle (δ-NFG + WL),Humanizer,2,0.833,4.858
+Heddle (δ-NFG + WL),Humanizer,3,0.572,2.56
+Heddle (δ-NFG + WL),Lean,-1,0.8,18.234
+Heddle (δ-NFG + WL),Lean,2,0.768,18.072
+Heddle (δ-NFG + WL),Lean,3,0.821,24.073
+Heddle (δ-NFG + WL),Nancy,-1,0.856,20.918
+Heddle (δ-NFG + WL),Nancy,2,0.808,16.522
+Heddle (δ-NFG + WL),Nancy,3,0.921,70.914
+Heddle (δ-NFG + WL),Newtonsoft.Json,-1,0.71,8.583
+Heddle (δ-NFG + WL),Newtonsoft.Json,2,0.712,8.012
+Heddle (δ-NFG + WL),Newtonsoft.Json,3,0.518,11.985
+Heddle (δ-NFG + WL),Ninject,-1,0.8,14.99
+Heddle (δ-NFG + WL),Ninject,2,0.8,14.99
+Heddle (δ-NFG + WL),Overall,-1,0.81,8.935
+Heddle (δ-NFG + WL),Overall,2,0.809,7.576
+Heddle (δ-NFG + WL),Overall,3,0.828,42.572
+Heddle (δ-NFG + WL),RestSharp,-1,0.823,10.106
+Heddle (δ-NFG + WL),RestSharp,2,0.822,9.859
+Heddle (δ-NFG + WL),RestSharp,3,0.894,26.246
+Herzig et al.,Commandline,-1,0.636,10.203
+Herzig et al.,Commandline,2,0.667,10.63
+Herzig et al.,Commandline,3,0.485,8.562
+Herzig et al.,CommonMark,-1,0.647,1958.537
+Herzig et al.,CommonMark,2,0.647,1958.537
+Herzig et al.,Hangfire,-1,0.632,18243.393
+Herzig et al.,Hangfire,2,0.694,15569.34
+Herzig et al.,Hangfire,3,0.538,47124.13
+Herzig et al.,Humanizer,-1,0.621,44.438
+Herzig et al.,Humanizer,2,0.643,40.617
+Herzig et al.,Humanizer,3,0.42,49.531
+Herzig et al.,Lean,-1,0.68,1454.854
+Herzig et al.,Lean,2,0.68,1454.854
+Herzig et al.,Nancy,-1,0.667,340.443
+Herzig et al.,Nancy,2,0.667,340.443
+Herzig et al.,Newtonsoft.Json,-1,0.675,180.281
+Herzig et al.,Newtonsoft.Json,2,0.675,180.281
+Herzig et al.,Ninject,-1,0.55,477.521
+Herzig et al.,Ninject,2,0.55,477.521
+Herzig et al.,Overall,-1,0.667,100.355
+Herzig et al.,Overall,2,0.684,67.147
+Herzig et al.,Overall,3,0.645,679.563
+Herzig et al.,RestSharp,-1,0.705,72.367
+Herzig et al.,RestSharp,2,0.707,46.223
+Herzig et al.,RestSharp,3,0.692,257.035
+δ-PDG + CV,Commandline,-1,0.8,0.594
+δ-PDG + CV,Commandline,2,0.765,0.422
+δ-PDG + CV,Commandline,3,0.84,153.552
+δ-PDG + CV,CommonMark,-1,0.895,10.375
+δ-PDG + CV,CommonMark,2,0.895,10.375
+δ-PDG + CV,Hangfire,-1,0.867,13.839
+δ-PDG + CV,Hangfire,2,0.844,10.609
+δ-PDG + CV,Hangfire,3,0.88,123.99
+δ-PDG + CV,Humanizer,-1,0.685,9.242
+δ-PDG + CV,Humanizer,2,0.685,9.242
+δ-PDG + CV,Lean,-1,0.841,19.284
+δ-PDG + CV,Lean,2,0.841,19.284
+δ-PDG + CV,Lean,3,0.715,17.078
+δ-PDG + CV,Nancy,-1,0.859,21.958
+δ-PDG + CV,Nancy,2,0.86,22.036
+δ-PDG + CV,Nancy,3,0.8,20.521
+δ-PDG + CV,Newtonsoft.Json,-1,0.821,20.323
+δ-PDG + CV,Newtonsoft.Json,2,0.857,20.036
+δ-PDG + CV,Newtonsoft.Json,3,0.688,51.542
+δ-PDG + CV,Ninject,-1,0.94,4.516
+δ-PDG + CV,Ninject,2,0.94,4.516
+δ-PDG + CV,Overall,-1,0.834,10.271
+δ-PDG + CV,Overall,2,0.833,6.781
+δ-PDG + CV,Overall,3,0.84,70.354
+δ-PDG + CV,RestSharp,-1,0.699,3.628
+δ-PDG + CV,RestSharp,2,0.743,3.927
+δ-PDG + CV,RestSharp,3,0.532,1.01

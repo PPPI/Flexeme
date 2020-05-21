@@ -49,16 +49,15 @@ We have not validated this under Wine in Linux. We have validated it to work und
 The corpus used to validate the approaches is artificially built to mimic 
 real-world faults using the methodology proposed in Herzig et al.[[1]](#1): 
 
-    1. Have been committed by the same developer within 14 days of each other
+1. Have been committed by the same developer within 14 days of each other
     with no other commit by the same developer in between them.
-    1. Change namespaces whose names have a large prefix match.
-    1. Contain files that are frequently changed together.
-    1. Do not contain certain keywords (such as `fix', `bug', `feature',
-    `implement') multiple times.
+2. Change namespaces whose names have a large prefix match.
+3. Contain files that are frequently changed together.
+4. Do not contain certain keywords (such as 'fix', 'bug', 'feature','implement') multiple times.
 
 The first criterion mimics the process by which a developer forgets to commit
 their working directory before picking up a new task. The next criterion is an
-adaptation of Herzig et al.'s `Change close packages' criterion to the C#
+adaptation of Herzig et al.'s 'Change close packages' criterion to the C#
 environment. The third considers files that are coupled in the version history,
 thus creating a tangled commit not too dissimilar from commits that naturally
 occurred. The intuition being that if commit *A* touches file *f<sub>A</sub>* and 
@@ -176,7 +175,7 @@ true \
 Commandline
 ```
 
-1. To run our adaptation of Herzig et al.'s method to work on our proposed 𝛿-PDG:
+2. To run our adaptation of Herzig et al.'s method to work on our proposed 𝛿-PDG:
 ```bash
 [../flexeme] $ python3 ./Util/cv_evaluation_driver.py \
 <number of repeats for timing> \
@@ -191,7 +190,7 @@ For example for Commandline, with all confidence voters being used and all edges
 [../flexeme] $ python3 ./Util/cv_evaluation_driver.py 10 bl_graph true Commandline
 ```
 
-1. To run the Barnett et al. reimplementation:
+3. To run the Barnett et al. reimplementation:
 ```bash
 [../flexeme] $ python3 ./Util/graph_evaluation_driver.py \
 <number of repeats for timing> \
@@ -205,7 +204,7 @@ For example for Commandline
 [../flexeme] $ python3 ./Util/graph_evaluation_driver.py 10 du Commandline
 ```
 
-1. To run the our proposed method:
+4. To run the our proposed method:
 ```bash
 [../flexeme] $ python3 ./Util/graph_evaluation_driver.py \
 <number of repeats for timing> \

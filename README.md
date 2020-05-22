@@ -112,6 +112,43 @@ a final script:
 
 For convenience, we provide the final result of this process for all our subjects as `./data.zip` [here](https://liveuclac-my.sharepoint.com/:f:/g/personal/ucabpp1_ucl_ac_uk/EkNrHsAyWPZCkhOsXXvERmIBpiraNlREcEEO4keHUFdRhA?e=6vxyCs). Password: `Flexeme_data_2020`.
 
+To generate the corpus needed to run the diff-regions baseline, one would use the scripts provided in `./confidence_voters/Util`.
+
+One would have to first the `~_history.json` as described above, then generate the main corpus file as so:
+
+```bash
+[../flexeme] $ python3 ./confidence_voters/Util/generate_corpus_file.py \
+<temp folder>
+<Repository 1> \
+...
+<Repository n>
+```
+
+For example, for the project Commandline and the temporary folder `./temp`
+
+```bash
+[../flexeme] $ python3 ./confidence_voters/Util/generate_corpus_file.py ./temp Commandline
+```
+
+This corpus will not have correct concept numbers if used directly, so one should then run:
+
+```bash
+[../flexeme] $ python3 ./confidence_voters/Util/clean_bl_corpus.py ./out \
+<Repository 1> \
+...
+<Repository n>
+```
+
+For Commandline, this would look like so:
+
+```bash
+[../flexeme] $ python3 ./confidence_voters/Util/clean_bl_corpus.py ./out Commandline
+```
+
+This will change the number of concepts to match the number of surviving concepts.
+
+For convenience, we provide the final result of this process for all our subjects as `./out.zip` [here](https://liveuclac-my.sharepoint.com/:f:/g/personal/ucabpp1_ucl_ac_uk/EkNrHsAyWPZCkhOsXXvERmIBpiraNlREcEEO4keHUFdRhA?e=6vxyCs). Password: `Flexeme_data_2020`.
+
 ## 𝛿-PDG construction
 To demonstrate how we generate 𝛿-PDG, consider this snippet:
 ```python

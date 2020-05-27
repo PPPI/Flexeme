@@ -30,20 +30,22 @@ We provide our evaluation analysis scripts under `./analysis` as a jupyter noteb
 The project depends on the following python packages:
 
 ```
-jsonpickle   # For data loading and storage
-scipy        # Used for the Hungarian algorithm when evaluating 3+ untangles
-tqdm         # Used for progressbars
-networkx     # Used for shortest-paths and general graph utils
-numpy        # Used for matrix operations
-fuzzywuzzy   # Used for fuzzy string matching
-pygraphviz   # Used as the main way to interact with .dot files
-pydot        # Used as a fall-back method to read .dot files
-grakel       # Used for the WL-kernel implementation
-nltk         # Used for tokenisation
+jsonpickle==1.2    # For data loading and storage
+scipy>=1.3.1       # Used for the Hungarian algorithm when evaluating 3+ untangles
+tqdm>=4.38.0       # Used for progressbars
+networkx>=2.4      # Used for shortest-paths and general graph utils
+numpy>=1.17.3      # Used for matrix operations
+fuzzywuzzy>=0.17.0 # Used for fuzzy string matching
+pygraphviz>=1.6    # Used as the main way to interact with .dot files
+pydot>=1.4.1       # Used as a fall-back method to read .dot files
+grakel>=0.1a6      # Used for the WL-kernel implementation
+nltk>=3.4.4        # Used for tokenisation
 ```
 
 Apart from the python requirements, the extractor requires running in a MS Windows system with .NET 4.5 installed.
 We have not validated this under Wine in Linux. We have validated it to work under WSL1.
+
+To install pygraphviz on Windows, one should apply the patch from [here](https://github.com/Kagami/pygraphviz/commit/fe442dc16accb629c3feaf157af75f67ccabbd6e) to a clone of the repository and install the patched repository using the steps from [here](https://github.com/pygraphviz/pygraphviz/issues/58) pointing to a 64-bit version of graphviz, obtainable from [here](https://ci.appveyor.com/project/ellson/graphviz/build/job/fry9cmn4jfegw13l/artifacts)
 
 ## Corpus
 The corpus used to validate the approaches is artificially built to mimic 

@@ -1,5 +1,5 @@
 # FLEXEME
-[![DOI](TODO)](TODO)
+[![DOI](https://zenodo.org/badge/265828516.svg)](https://zenodo.org/badge/latestdoi/265828516)
 
 This project provides several implementations for commit untagling and proposes a new representation of
 git patches by projecting the patch onto a PDG.

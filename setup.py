@@ -8,6 +8,6 @@ setup(
     license='MIT',
     author='',
     author_email='',
-    description='', install_requires=['jsonpickle', 'scipy', 'tqdm', 'networkx', 'numpy', 'fuzzywuzzy', 'pygraphviz',
+    description='', install_requires=['jsonpickle', 'scipy', 'tqdm', 'networkx', 'numpy', 'rapidfuzz', 'pygraphviz',
                                       'pydot', 'grakel', 'nltk']
 )

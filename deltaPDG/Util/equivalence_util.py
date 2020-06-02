@@ -1,4 +1,4 @@
-from fuzzywuzzy import fuzz
+from rapidfuzz import fuzz
 
 
 class Eq_Utils(object):
@@ -7,10 +7,10 @@ class Eq_Utils(object):
         self.n_fuzziness = n_fuzziness
 
     def context_eq(self, context_a: str, context_b: str) -> bool:
-        return fuzz.ratio(context_a, context_b) >= self.m_fuzziness
+        return fuzz.ratio(context_a, context_b, score_cutoff=self.m_fuzziness) > 0
 
     def node_label_eq(self, node_label_a: str, node_label_b: str) -> bool:
-        return fuzz.ratio(node_label_a, node_label_b) >= self.n_fuzziness
+        return fuzz.ratio(node_label_a, node_label_b, score_cutoff=self.m_fuzziness) > 0
 
     def node_eq(self, graph_a, node_a, graph_b, node_b):
         if not (self.node_label_eq(graph_a.node[node_a]['label'], graph_b.node[node_b]['label'])):

@@ -4,6 +4,10 @@
 This project provides several implementations for commit untagling and proposes a new representation of
 git patches by projecting the patch onto a PDG.
 
+This work was done under the supervision of [Earl Barr](http://earlbarr.com/) and 
+in collaboration with [Santanu Dash](http://santanu.uk/), and [Miltos Allamanis](https://miltos.allamanis.com/).
+
+
 ## Repository Structure
 We provide an artificial corpus and a way of building such corpora in `./tangle_concerns`.
 

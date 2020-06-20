@@ -170,7 +170,7 @@ delta_gen = deltaPDG('./temp/%d/before_pdg.dot' % id_, m_fuzziness=method_fuzzin
 delta_pdg = delta_gen('./temp/%d/after_pdg.dot' % id_,
                       [ch for ch in changes if ch[1] == filename])
 ```
-The `v[1/2]_pdg_geberatir` is instantiated with the repository at version 1 and version 2 respectively.
+The `v[1/2]_pdg_generator` is instantiated with the repository at version 1 and version 2 respectively.
 They will output the PDGs as the specified filenames.
 When we have a file touched by a patch, say `filename`, we then call these generators on the same file.
 We instantiate the deltaPDG with the beforePDG. We then call it with the afterPDG.

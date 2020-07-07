@@ -1,6 +1,8 @@
 # FLEXEME
 [![DOI](https://zenodo.org/badge/265828516.svg)](https://zenodo.org/badge/latestdoi/265828516)
 
+![Overview of Flexme](overview.png)
+
 Today, most developers bundle changes into commits that they submit to a shared code repository. 
 Tangled commits intermix distinct concerns, such as a bug fix and a new feature. 
 They cause issues for developers, reviewers, and researchers alike: they restrict the usability of tools such as git bisect, make patch comprehension more difficult, and force researchers who mine software repositories to contend with noise. 
@@ -11,6 +13,3 @@ At the untangling task on a C# corpus, our implementation, Heddle, improves the 
 
 This work was done under the supervision of [Earl T. Barr](http://earlbarr.com/) and 
 in collaboration with [Santanu K. Dash](http://santanu.uk/), and [Miltos Allamanis](https://miltos.allamanis.com/).
-
-![Overview of Flexme](overview.png)
-

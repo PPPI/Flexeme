@@ -13,3 +13,6 @@ At the untangling task on a C# corpus, our implementation, Heddle, improves the 
 
 This work was done under the supervision of [Earl T. Barr](http://earlbarr.com/) and 
 in collaboration with [Santanu K. Dash](http://santanu.uk/), and [Miltos Allamanis](https://miltos.allamanis.com/).
+
+A pre-recorded presentation of the work is available [here](https://liveuclac-my.sharepoint.com/:v:/g/personal/ucabpp1_ucl_ac_uk/EbZ-iehHCHBDjAvftTBWBYkBCiqIRg3nmvwxg6S12TViSQ?e=t9vPM6).
+Slides can be downlaoded from [here](https://github.com/PPPI/Flexeme/raw/master/docs/Flexeme_FSE_profirpp.pdf).

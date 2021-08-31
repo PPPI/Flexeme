@@ -322,7 +322,7 @@ and agglomerative clustering.
 If you use this project, please cite the paper as follows:
 ```bibtex
 @inproceedings{10.1145/3368089.3409693,
-author = {P\^{a}rundefinedachi, Profir-Petru and Dash, Santanu Kumar and Allamanis, Miltiadis and Barr, Earl T.},
+author = {P\^{a}rțachi, Profir-Petru and Dash, Santanu Kumar and Allamanis, Miltiadis and Barr, Earl T.},
 title = {Flexeme: Untangling Commits Using Lexical Flows},
 year = {2020},
 isbn = {9781450370431},

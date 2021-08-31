@@ -317,6 +317,28 @@ else:
 1. `k_hop` represents the number of hops taken when building the forest of graphs prior to re-clustering via WL-kernel similarity
 and agglomerative clustering.
 
+## Cite
+
+If you use this project, please cite the paper as follows:
+```bibtex
+@inproceedings{10.1145/3368089.3409693,
+author = {P\^{a}rundefinedachi, Profir-Petru and Dash, Santanu Kumar and Allamanis, Miltiadis and Barr, Earl T.},
+title = {Flexeme: Untangling Commits Using Lexical Flows},
+year = {2020},
+isbn = {9781450370431},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3368089.3409693},
+doi = {10.1145/3368089.3409693},
+booktitle = {Proceedings of the 28th ACM Joint Meeting on European Software Engineering Conference and Symposium on the Foundations of Software Engineering},
+pages = {63–74},
+numpages = {12},
+keywords = {graph kernels, clustering, commint untangling},
+location = {Virtual Event, USA},
+series = {ESEC/FSE 2020}
+}
+```
+
 ## References
 <a id="1">[1]</a> Herzig, K., Just, S., & Zeller, A. (2016). The impact of tangled code changes on defect prediction models. 
 Empirical Software Engineering, 21(2), 303–336. https://doi.org/10.1007/s10664-015-9376-6

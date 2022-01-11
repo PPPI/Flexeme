@@ -106,6 +106,16 @@ all the valid intervals of commits w.r.t. our tangle criteria. Next, one would r
 ./extractor/Release/PdgExtractor.exe  # Location of the PDG Extractor
 ```
 
+The last step creates a δPDG per file, scripts moving forward assume a single file per commit. To obtain that we want to run the following snippet over all generated data:
+```python
+from deltaPDG.Util.merge_deltaPDGs import merge_deltas_for_a_commit
+
+for path_to_commit from all_paths:
+    merged = merge_deltas_for_a_commit(get_pattern_paths('*.cs.dot', path_to_commit))
+    nx.drawing.nx_pydot.write_dot(merged, os.path.join(path_to_commit, 'merged.dot'))
+```
+Please mind that later scripts assume the filename `merged.dot`. To generate `all_paths`, one can use the `*_history_filtered_flat.json` previously generated and the following logic: data is always in `./out/<Project Name>/<first sha in json chain>_<last sha in json chain>/<num commits merged>/`.
+
 Finally, we want to ensure that the data generated reflect the correct number of _surviving_ concerns. To do this we run
 a final script:
 ```bash

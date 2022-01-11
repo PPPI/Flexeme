@@ -114,7 +114,7 @@ for path_to_commit from all_paths:
     merged = merge_deltas_for_a_commit(get_pattern_paths('*.cs.dot', path_to_commit))
     nx.drawing.nx_pydot.write_dot(merged, os.path.join(path_to_commit, 'merged.dot'))
 ```
-Please mind that later scripts assume the filename `merged.dot`. To generate `all_paths`, one can use the `*_history_filtered_flat.json` previously generated and the following logic: data is always in `./out/<Project Name>/<first sha in json chain>_<last sha in json chain>/<num commits merged>/`.
+Please mind that later scripts assume the filename `merged.dot`. To generate `all_paths`, one can use the `*_history_filtered_flat.json` previously generated and the following logic: data is always in `./data/corpora/<Project Name>/<first sha in json chain>_<last sha in json chain>/<num commits merged>/`.
 
 Finally, we want to ensure that the data generated reflect the correct number of _surviving_ concerns. To do this we run
 a final script:

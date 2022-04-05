@@ -1,7 +1,7 @@
 # FLEXEME
 [![DOI](https://zenodo.org/badge/265828516.svg)](https://zenodo.org/badge/latestdoi/265828516)
 
-![Overview of Flexme](overview.png)
+<img src="./overview.png" alt="Overview of Flexme" style="width:640px;"/>
 
 Today, most developers bundle changes into commits that they submit to a shared code repository. 
 Tangled commits intermix distinct concerns, such as a bug fix and a new feature. 

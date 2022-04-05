@@ -11,8 +11,8 @@ A 𝛿-NFG directly and simultaneously encodes different program versions, there
 Our technique, Flexeme, builds a 𝛿-NFG from commits, then applies Agglomerative Clustering using Graph Similarity to that 𝛿-NFG to untangle its commits. 
 At the untangling task on a C# corpus, our implementation, Heddle, improves the state-of-the-art on accuracy by 0.14, achieving 0.81, in a fraction of the time: Heddle is 32 times faster than the previous state-of-the-art.
 
-This work was done under the supervision of [Earl T. Barr](http://earlbarr.com/) and 
-in collaboration with [Santanu K. Dash](http://santanu.uk/), and [Miltos Allamanis](https://miltos.allamanis.com/).
+This work was done under the supervision of [Earl T. Barr](https://earlbarr.com/) and 
+in collaboration with [Santanu K. Dash](https://santanu.uk/), and [Miltos Allamanis](https://miltos.allamanis.com/).
 
 A pre-recorded presentation of the work is available [here](https://liveuclac-my.sharepoint.com/:v:/g/personal/ucabpp1_ucl_ac_uk/EbZ-iehHCHBDjAvftTBWBYkBCiqIRg3nmvwxg6S12TViSQ?e=t9vPM6).
-Slides can be downlaoded from [here](https://github.com/PPPI/Flexeme/raw/master/docs/Flexeme_FSE_profirpp.pdf).
+Slides can be downlaoded from [here](./Flexeme_FSE_profirpp.pdf).

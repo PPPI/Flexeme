@@ -85,7 +85,8 @@ latest SHA used for this project:
 |[Ninject](https://github.com/ninject/ninject) | 13656 | 784 | 6a7ed2b|
 |[RestSharp](https://github.com/restsharp/RestSharp) | 16233 | 1440 | b52b9be|
 
-To reconstruct the corpus, one would first `git clone` under `./subject` the project for which they are building it followed by 
+To reconstruct the corpus, one would first `git clone` under `./subjects` the project for which they are building it 
+followed by 
 a `git reset --hard <Last revision>`. With the project in the correct state, one would then use the scripts provided in 
 `./tangle_concerns`.
 

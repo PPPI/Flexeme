@@ -131,7 +131,7 @@ def tangle_by_file(subject, temp_loc):
 if __name__ == '__main__':
     repository_name = sys.argv[1]
 
-    os.makedirs("out/%s" % repository_name)
+    os.makedirs("out/%s" % repository_name, exist_ok=True)
     outfile = 'out/%s/%s_history_filtered_flat.json' % (repository_name, repository_name)
     history_flat = tangle_by_file('./subjects/%s' % repository_name, ".tmp")
     with open(outfile, 'w') as f:

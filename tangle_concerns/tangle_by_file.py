@@ -1,6 +1,10 @@
+#
+# Generates multiple lists of commits. Each list of commit represent a tangled commit.
+#
 import datetime
 import json
 import sys
+import os
 from collections import defaultdict
 from typing import List, Tuple, Any
 
@@ -9,7 +13,6 @@ import numpy as np
 from deltaPDG.Util.git_util import Git_Util
 
 KEYWORDS = {'FIX', 'FIXES', 'FIXED', 'IMPLEMENTS', 'IMPLEMENTED', 'IMPLEMENT', 'BUG', 'FEATURE', }
-
 
 def get_history_by_file(gh: Git_Util, repository_root: str, files_considered: List[str]):
     return {filename: gh.get_commits_for_file(filename, repository_root) for filename in files_considered}
@@ -87,6 +90,7 @@ def tangle_by_file(subject, temp_loc):
     days = 14
     up_to_concerns = 4
 
+    os.makedirs(temp_loc, exist_ok=True)
     git_handler = Git_Util(temp_dir=temp_loc)
 
     with git_handler as gh:
@@ -126,6 +130,9 @@ def tangle_by_file(subject, temp_loc):
 
 if __name__ == '__main__':
     repository_name = sys.argv[1]
-    history_flat = tangle_by_file('./subjects/%s' % repository_name, 'D:\\Temp')
-    with open('out/%s/%s_history_filtered_flat.json' % (repository_name, repository_name), 'w') as f:
+
+    os.makedirs("out/%s" % repository_name)
+    outfile = 'out/%s/%s_history_filtered_flat.json' % (repository_name, repository_name)
+    history_flat = tangle_by_file('./subjects/%s' % repository_name, ".tmp")
+    with open(outfile, 'w') as f:
         f.write(json.dumps(history_flat))

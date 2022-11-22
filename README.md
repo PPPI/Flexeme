@@ -1,7 +1,7 @@
 # FLEXEME
 [![DOI](https://zenodo.org/badge/265828516.svg)](https://zenodo.org/badge/latestdoi/265828516)
 
-This project provides several implementations for commit untagling and proposes a new representation of
+This project provides several implementations for commit untangling and proposes a new representation of
 git patches by projecting the patch onto a PDG.
 
 ## Repository Structure
@@ -41,7 +41,11 @@ pydot>=1.4.1       # Used as a fall-back method to read .dot files
 grakel>=0.1a6      # Used for the WL-kernel implementation
 nltk>=3.4.4        # Used for tokenisation
 ```
+We recommend using a virtual environment to install the dependencies.
+Use `python3 -m venv .venv` then `source .venv/bin/activate` and finally `pip install .` to install the 
+dependencies.
 
+###For Windows
 Apart from the python requirements, the extractor requires running in a MS Windows system with .NET 4.5 installed.
 We have not validated this under Wine in Linux. We have validated it to work under WSL1.
 
@@ -73,18 +77,18 @@ ground truth.
 As we cannot include the studied projects here, we instead link them here and provide the 
 latest SHA used for this project:
 
-| Project | LOC | # of Commits | Last revision |
-|---------|-----|--------------|---------------|
-|[Commandline](https://github.com/commandlineparser/commandline) | 11602 | 1556 | 67f77e1| 
-|[CommonMark](https://github.com/Knagis/CommonMark.NET) | 14613 | 418 | f3d5453|
-|[Hangfire](https://github.com/HangfireIO/Hangfire) | 40263 | 2889 | 175207c|
-|[Humanizer](https://github.com/Humanizr/Humanizer) | 56357 | 1647 | 604ebcc|
-|[Lean](https://github.com/QuantConnect/Lean) | 242974 | 7086 | 71bc0fa|
-|[Nancy](https://github.com/NancyFx/Nancy) | 79192 | 5497 | dbdbe94|
-|[Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json) | 71704 | 299 | 4f8832a|
-|[Ninject](https://github.com/ninject/ninject) | 13656 | 784 | 6a7ed2b|
-|[RestSharp](https://github.com/restsharp/RestSharp) | 16233 | 1440 | b52b9be|
-
+| Project                                                         | LOC | # of Commits | Last revision |
+|-----------------------------------------------------------------|-----|-------------|---------------|
+| [Commandline](https://github.com/commandlineparser/commandline) | 11602 | 1556        | 67f77e1| 
+| [CommonMark](https://github.com/Knagis/CommonMark.NET)          | 14613 | 418         | f3d5453|
+| [Hangfire](https://github.com/HangfireIO/Hangfire)              | 40263 | 2889        | 175207c|
+| [Humanizer](https://github.com/Humanizr/Humanizer)              | 56357 | 1647        | 604ebcc|
+| [Lean](https://github.com/QuantConnect/Lean)                    | 242974 | 7086        | 71bc0fa|
+| [Nancy](https://github.com/NancyFx/Nancy)                       | 79192 | 5497        | dbdbe94|
+| [Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json)   | 71704 | 299         | 4f8832a|
+| [Ninject](https://github.com/ninject/ninject)                   | 13656 | 784         | 6a7ed2b|
+| [RestSharp](https://github.com/restsharp/RestSharp)             | 16233 | 1440        | b52b9be|
+| [Jfreechart](https://github.com/jfree/jfreechart) (Java)        | TBD | 4218        | d6c1bf|
 To reconstruct the corpus, one would first `git clone` under `./subjects` the project for which they are building it 
 followed by 
 a `git reset --hard <Last revision>`. With the project in the correct state, one would then use the scripts provided in 
@@ -105,6 +109,11 @@ all the valid intervals of commits w.r.t. our tangle criteria. Next, one would r
 0 \ # Thread id numbering starts from this id, used to avoid overlap in ./temp
 12 \ # Number of threads in use
 ./extractor/Release/PdgExtractor.exe  # Location of the PDG Extractor
+```
+
+Java:
+```
+python tangle_concerns/generate_corpus.py out/jfreechart/synthetic_commits_sample.json subjects/jfreechart .tmp 1 1 /Users/thomas/Workplace/Flexeme/pdg-extractor-0.1.jar
 ```
 
 The last step creates a δPDG per file, scripts moving forward assume a single file per commit. To obtain that we want to run the following snippet over all generated data:

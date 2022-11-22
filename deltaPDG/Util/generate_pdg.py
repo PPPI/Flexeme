@@ -2,6 +2,7 @@ import json
 import os
 import shutil
 import subprocess
+import logging
 
 import networkx as nx
 
@@ -21,24 +22,31 @@ class PDG_Generator(object):
         self.target_location = target_location
 
     def __call__(self, filename):
+        print("PDG for: " + filename)
+        print(self.repository_location)
         from sys import platform
-        if platform == "linux" or platform == "linux2":
-            # linux
+        if platform == "linux" or platform == "linux2":  # linux
             generate_a_pdg = subprocess.Popen([self.location, '.', '.' + filename.replace('/', '\\')],
                                               bufsize=1, cwd=self.repository_location)
             generate_a_pdg.wait()
-        elif platform == "win32":
-            # Windows...
+        elif platform == "win32": # Windows
+
             generate_a_pdg = subprocess.Popen([self.location, '.', '.' + filename.replace('/', '\\')], bufsize=1,
                                               cwd=self.repository_location)
             generate_a_pdg.wait()
+
+        elif platform == "darwin": # MacOS
+            generate_a_pdg = subprocess.Popen(['java', '-jar', self.location, '.' + filename],
+                                              cwd=self.repository_location)
+            generate_a_pdg.wait()
+        else:
+            print("Platform not supported")
 
         try:
             shutil.move(os.path.join(self.repository_location, 'pdg.dot'),
                         os.path.join(self.target_location, self.target_filename))
         except FileNotFoundError:
-            with open(os.path.join(self.target_location, self.target_filename), 'w') as f:
-                f.write('digraph "extractedGraph"{\n}\n')
+            print("Diagram not found for " + filename)
 
         try:
             # shutil.move(os.path.join(self.repository_location, 'nameflows.json'),

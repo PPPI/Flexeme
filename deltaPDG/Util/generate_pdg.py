@@ -2,6 +2,8 @@ import json
 import os
 import shutil
 import subprocess
+
+from sys import platform
 import logging
 
 import networkx as nx
@@ -22,9 +24,9 @@ class PDG_Generator(object):
         self.target_location = target_location
 
     def __call__(self, filename):
-        print("PDG for: " + filename)
-        print(self.repository_location)
-        from sys import platform
+        logging.info(f"Generating PDG for {filename} in temporary repository {self.repository_location}")
+
+        generate_a_pdg = None
         if platform == "linux" or platform == "linux2":  # linux
             generate_a_pdg = subprocess.Popen([self.location, '.', '.' + filename.replace('/', '\\')],
                                               bufsize=1, cwd=self.repository_location)
@@ -39,14 +41,21 @@ class PDG_Generator(object):
             generate_a_pdg = subprocess.Popen(['java', '-jar', self.location, '.' + filename],
                                               cwd=self.repository_location)
             generate_a_pdg.wait()
+            # print(f"Return code {generate_a_pdg.returncode}")
+            # print(generate_a_pdg.stdout)
+            # print(generate_a_pdg.stderr)
         else:
             print("Platform not supported")
+
+        if not generate_a_pdg or generate_a_pdg.returncode:
+            logging.error(f"PDG Generation failed for {filename}")
+            exit(1)
 
         try:
             shutil.move(os.path.join(self.repository_location, 'pdg.dot'),
                         os.path.join(self.target_location, self.target_filename))
         except FileNotFoundError:
-            print("Diagram not found for " + filename)
+            logging.error("Diagram not found for " + filename)
 
         try:
             # shutil.move(os.path.join(self.repository_location, 'nameflows.json'),

@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 import sys
 from threading import Thread
@@ -11,6 +12,10 @@ from deltaPDG.Util.git_util import Git_Util
 from deltaPDG.deltaPDG import deltaPDG
 from tangle_concerns.tangle_by_file import tangle_by_file
 
+logging.basicConfig(level=logging.DEBUG,
+                    format='[%(asctime)s] %(levelname)s: %(message)s',
+                    datefmt='%Y-%m-%d %H:%M:%S',
+                    handlers=[logging.StreamHandler()])
 
 def mark_originating_commit(dpdg, marked_diff, filename):
     dpdg = dpdg.copy()
@@ -61,7 +66,7 @@ def mark_origin(tangled_diff, atomic_diffs):
 
 
 def worker(work, subject_location, id_, temp_loc, extractor_location):
-    print("Starting worker" + str(id_))
+    logging.info("Starting worker" + str(id_))
     repository_name = os.path.basename(subject_location)
     method_fuzziness = 100
     node_fuzziness = 100
@@ -82,7 +87,7 @@ def worker(work, subject_location, id_, temp_loc, extractor_location):
                                          target_filename='after_pdg.dot',
                                          target_location=temp_dir_worker)
         for chain in work:
-            print('Working on chain: %s' % str(chain))
+            logging.info('Working on chain: %s' % str(chain))
             from_ = chain[0]
             gh.set_git_to_rev(from_ + '^', v1)
             gh.set_git_to_rev(from_, v2)
@@ -99,10 +104,10 @@ def worker(work, subject_location, id_, temp_loc, extractor_location):
                 i += 1
                 previous_sha = to_
                 files_touched = {filename for _, filename, _, _, _ in changes if
-                                 os.path.basename(filename).split('.')[-1] == 'java' and not filename.endswith(
-                                     "Tests.java")}
+                                 os.path.basename(filename).split('.')[-1] == 'java'} # and not filename.endswith("Tests.java")
+                logging.info(f"{len(files_touched)} files affected")
                 for filename in files_touched:
-                    print(filename)
+                    logging.info(f"Generating PDGs for {filename}")
                     try:
                         output_path = './out/corpora_raw/%s/%s_%s/%d/%s.dot' % (
                             repository_name, from_, to_, i, os.path.basename(filename))
@@ -140,7 +145,7 @@ if __name__ == '__main__':
 
     try:
         with open(json_location) as f:
-            print("Found chains")
+            logging.info("Found chains")
             list_to_tangle = jsonpickle.decode(f.read())
     except FileNotFoundError:
         list_to_tangle = tangle_by_file(subject_location, temp_loc)

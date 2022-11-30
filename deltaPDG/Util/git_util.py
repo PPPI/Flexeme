@@ -35,7 +35,8 @@ class Git_Util(object):
 
     @staticmethod
     def set_git_to_rev(sha: str, path: str):
-        git_reset_process = subprocess.Popen(['git', 'checkout', '-f', sha], bufsize=1, cwd=path)
+        git_reset_process = subprocess.Popen(['git', '-c', 'advice.detachedHead=false', 'checkout', '-f', sha],
+                                             bufsize=1, cwd=path)
         git_reset_process.wait()
 
     @staticmethod

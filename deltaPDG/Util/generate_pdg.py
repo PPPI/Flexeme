@@ -11,21 +11,23 @@ import networkx as nx
 from deltaPDG.Util.merge_nameflow import add_nameflow_edges
 from deltaPDG.Util.pygraph_util import read_graph_from_dot, obj_dict_to_networkx
 
-
 class PDG_Generator(object):
     """
     This class serves as a wrapper to abstract away calling the C# compiled PDG extractor
     """
 
-    def __init__(self, extractor_location, repository_location, target_filename="pdg.dot", target_location=os.getcwd()):
+    def __init__(self,
+                 extractor_location,
+                 repository_location,
+                 target_filename="pdg.dot",
+                 target_location=os.getcwd()):
         self.location = extractor_location
         self.repository_location = repository_location
         self.target_filename = target_filename
         self.target_location = target_location
+        self.java_exec = os.getenv('FLEXEME_JAVA', "java")
 
     def __call__(self, filename):
-        logging.info(f"Generating PDG for {filename} in temporary repository {self.repository_location}")
-
         generate_a_pdg = None
         if platform == "linux" or platform == "linux2":  # linux
             generate_a_pdg = subprocess.Popen([self.location, '.', '.' + filename.replace('/', '\\')],
@@ -38,12 +40,11 @@ class PDG_Generator(object):
             generate_a_pdg.wait()
 
         elif platform == "darwin": # MacOS
-            generate_a_pdg = subprocess.Popen(['java', '-jar', self.location, '.' + filename],
+            generate_a_pdg = subprocess.Popen([self.java_exec, '-cp', self.location,
+                                               'org.checkerframework.checker.codechanges.FlexemePdgGenerator',
+                                               '.' + filename],
                                               cwd=self.repository_location)
             generate_a_pdg.wait()
-            # print(f"Return code {generate_a_pdg.returncode}")
-            # print(generate_a_pdg.stdout)
-            # print(generate_a_pdg.stderr)
         else:
             print("Platform not supported")
 

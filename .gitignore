@@ -103,23 +103,22 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+# IDEs
 .vscode/
 .vscode/*
-
 .idea/
 .idea/*
 
+# Directories
 results/
 results/*
-
 data/
 data/*
-
 articles/
 articles/*
-
 out/
 out/*
-
 extractor/
 extractor/*
+subjects/*/**
+.tmp/

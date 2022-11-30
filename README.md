@@ -31,20 +31,6 @@ Evaluation drivers are provided under `./Util/[cv/graph]_evaluation_driver.py`.
 We provide our evaluation analysis scripts under `./analysis` as a jupyter notebook.
 
 ## Dependencies
-The project depends on the following python packages:
-
-```
-jsonpickle==1.2    # For data loading and storage
-scipy>=1.3.1       # Used for the Hungarian algorithm when evaluating 3+ untangles
-tqdm>=4.38.0       # Used for progressbars
-networkx>=2.4      # Used for shortest-paths and general graph utils
-numpy>=1.17.3      # Used for matrix operations
-rapidfuzz>=0.9.1   # Used for fuzzy string matching
-pygraphviz>=1.6    # Used as the main way to interact with .dot files
-pydot>=1.4.1       # Used as a fall-back method to read .dot files
-grakel>=0.1a6      # Used for the WL-kernel implementation
-nltk>=3.4.4        # Used for tokenisation
-```
 We recommend using a virtual environment to install the dependencies.
 Use `python3 -m venv .venv` then `source .venv/bin/activate` and finally `pip install .` to install the 
 dependencies.

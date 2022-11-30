@@ -4,6 +4,10 @@
 This project provides several implementations for commit untangling and proposes a new representation of
 git patches by projecting the patch onto a PDG.
 
+## How To
+1. Cloning subjects: `./subjects clone_subjects.sh`
+2. Creating synthetic commits `./synthetize_commits.sh`
+
 ## Repository Structure
 We provide an artificial corpus and a way of building such corpora in `./tangle_concerns`.
 

@@ -103,7 +103,10 @@ all the valid intervals of commits w.r.t. our tangle criteria. Next, one would r
 
 Java:
 ```
-python tangle_concerns/generate_corpus.py out/jfreechart/synthetic_commits_sample.json subjects/jfreechart .tmp 1 1 /Users/thomas/Workplace/Flexeme/pdg-extractor-0.1.jar
+export FLEXEME_JAVA=java 11 path
+```
+```
+ python tangle_concerns/generate_corpus.py out/basic.json subjects/basic .tmp 1 1 /Users/thomas/Workplace/Flexeme/extractors/codechanges-checker-all.jar
 ```
 
 The last step creates a δPDG per file, scripts moving forward assume a single file per commit. To obtain that we want to run the following snippet over all generated data:

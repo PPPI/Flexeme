@@ -31,6 +31,8 @@ Evaluation drivers are provided under `./Util/[cv/graph]_evaluation_driver.py`.
 We provide our evaluation analysis scripts under `./analysis` as a jupyter notebook.
 
 ## Dependencies
+**Requires python 3.8**.
+
 We recommend using a virtual environment to install the dependencies.
 Use `python3 -m venv .venv` then `source .venv/bin/activate` and finally `pip install .` to install the 
 dependencies.

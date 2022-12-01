@@ -118,6 +118,7 @@ def worker(work, subject_location, id_, temp_loc, extractor_location):
                         # except FileNotFoundError:
                         v1_pdg_generator(filename)
                         v2_pdg_generator(filename)
+                        logging.info(f"PDGs generated for {from_} and {to_}")
                         delta_gen = deltaPDG(temp_dir_worker + '/before_pdg.dot', m_fuzziness=method_fuzziness,
                                              n_fuzziness=node_fuzziness)
                         delta_pdg = delta_gen(temp_dir_worker + '/after_pdg.dot',

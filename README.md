@@ -7,6 +7,11 @@ git patches by projecting the patch onto a PDG.
 ## How To
 1. Cloning subjects: `./subjects clone_subjects.sh`
 2. Creating synthetic commits `./synthetize_commits.sh`
+3. Generate ∂PDGs for each file `python3 generate_corpus.py out/basic.json subjects/basic .tmp 1 1 ./
+   extractors/codechanges-checker-all.jar`
+4. (Merge files into `merged.dot`)
+5. Clean merged.dot `python3 tangle_concerns/scan_and_clean_corpora.py basic`
+6. Evaluate `python ./Util/graph_evaluation_driver.py 1 wl 20 basic`
 
 ## Repository Structure
 We provide an artificial corpus and a way of building such corpora in `./tangle_concerns`.
@@ -34,7 +39,7 @@ We provide our evaluation analysis scripts under `./analysis` as a jupyter noteb
 **Requires python 3.8**.
 
 We recommend using a virtual environment to install the dependencies.
-Use `python3 -m venv .venv` then `source .venv/bin/activate` and finally `pip install .` to install the 
+Use `python3 -m venv .venv` then `source .venv/bin/activate` and finally `pip install -e .` to install the 
 dependencies.
 
 ###For Windows
@@ -81,6 +86,7 @@ latest SHA used for this project:
 | [Ninject](https://github.com/ninject/ninject)                   | 13656 | 784         | 6a7ed2b|
 | [RestSharp](https://github.com/restsharp/RestSharp)             | 16233 | 1440        | b52b9be|
 | [Jfreechart](https://github.com/jfree/jfreechart) (Java)        | TBD | 4218        | d6c1bf|
+
 To reconstruct the corpus, one would first `git clone` under `./subjects` the project for which they are building it 
 followed by 
 a `git reset --hard <Last revision>`. With the project in the correct state, one would then use the scripts provided in 

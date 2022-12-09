@@ -1,5 +1,6 @@
 import itertools
 import os
+import logging
 import re
 import time
 from collections import defaultdict
@@ -70,6 +71,8 @@ def deltaPDG_to_list_of_Graphs(delta: nx.MultiDiGraph, khop_k: int = 1) -> Tuple
 
 def validate(files: List[str], times, k_hop, repository_name, edges_kept="all",
              with_data: bool = True, with_call: bool = True, with_name: bool = True, suffix="raw"):
+    if not len(files):
+        logging.error("No files to validate.")
     n_workers = 1
     chunck_size = int(len(files) / n_workers)
     while (chunck_size == 0) and (n_workers > 1):
@@ -90,6 +93,7 @@ def validate(files: List[str], times, k_hop, repository_name, edges_kept="all",
             t0 = time.perf_counter()
             for i in range(times):
                 seeds, list_of_graphs = deltaPDG_to_list_of_Graphs(graph, khop_k=k_hop)
+                logging.info(f"List of graph length {len(list_of_graphs)}")
                 wl_subtree = GraphKernel(kernel=[{"name": "weisfeiler_lehman", "n_iter": 10}, {"name": "subtree_wl"}],
                                          normalize=True)
                 if len(list_of_graphs) > 0:
@@ -99,9 +103,12 @@ def validate(files: List[str], times, k_hop, repository_name, edges_kept="all",
                         wl_subtree.fit([graph_to_grakel(g1, with_data, with_call, with_name)])
                         similarity = wl_subtree.transform([graph_to_grakel(g2, with_data, with_call, with_name)])[0][0]
                         similarities[(list_of_graphs.index(g1), list_of_graphs.index(g2))] = similarity
+                        logging.info(similarity)
 
                     n = len(list_of_graphs)
+                    logging.info(f"n={n}")
                     affinity = np.zeros(shape=(scipy.special.comb(n, 2, exact=True),))
+                    logging.info(f"affinity={affinity}")
                     args = list(enumerate(itertools.combinations(range(n), 2)))
                     with ThreadPool(processes=min(os.cpu_count() - 1, 1)) as wp:
                         for k, value in wp.imap_unordered(lambda i: (i[0], similarities[(i[-1][0], i[-1][1])]),
@@ -109,8 +116,8 @@ def validate(files: List[str], times, k_hop, repository_name, edges_kept="all",
                             affinity[k] += (1 - value)  # affinity is distance! so (1 - sim)
 
                     cluster = AgglomerativeClustering(n_clusters=None, distance_threshold=0.5,
-                                                      affinity='precomputed',
-                                                      linkage='complete')
+                                                      affinity='precomputed', linkage='complete')
+                    logging.info(f"Affinity: {affinity}")
                     if len(affinity) < 2:
                         if len(affinity) == 1:
                             labels = np.asarray([0, 0]) if affinity[0] <= 0.5 else np.asarray([0, 1])
@@ -125,6 +132,7 @@ def validate(files: List[str], times, k_hop, repository_name, edges_kept="all",
 
             truth = list()
             label = list()
+            logging.info(labels)
             for node, data in graph.nodes(data=True):
                 if 'color' in data.keys():
                     if 'community' in data.keys():
@@ -147,6 +155,8 @@ def validate(files: List[str], times, k_hop, repository_name, edges_kept="all",
             acc, overlap = evaluate(truth[label > -1], label[label > -1], q=1 if len(label) == 0 else np.max(label) + 1)
             with open('./out/%s/wl_%s_%d_results_%s.csv' % (repository_name, edges_kept, k_hop, suffix), 'a') as f:
                 f.write(chain + ',' + str(q) + ',' + str(acc) + ',' + str(overlap) + ',' + str(time_) + '\n')
+            logging.info(truth)
+            logging.info(label)
 
     threads = []
     for work in chuncked:

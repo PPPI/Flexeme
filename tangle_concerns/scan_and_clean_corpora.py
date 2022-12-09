@@ -10,6 +10,7 @@ from deltaPDG.Util.pygraph_util import read_graph_from_dot, obj_dict_to_networkx
 
 def worker(all_graph_locations, corpus_name):
     for graph_location in all_graph_locations:
+        print(graph_location)
         data_point_name = os.path.basename(os.path.dirname(os.path.dirname(graph_location)))
         if os.path.exists(os.path.join('.', 'data', 'corpora_clean', corpus_name, data_point_name)):
             print('[Scan and clean] Skipping %s as it exists'
@@ -48,12 +49,13 @@ def worker(all_graph_locations, corpus_name):
 
 if __name__ == '__main__':
     corpus_name = sys.argv[1]
-    all_graph_locations = get_pattern_paths('*merged.dot', os.path.join('.', 'data', 'corpora', corpus_name))
+    all_graph_locations = get_pattern_paths('*merged.dot', os.path.join('.', 'out', 'corpora_raw', corpus_name))
     os.makedirs(os.path.join('.', 'data', 'corpora_clean', corpus_name), exist_ok=True)
+    # 32 workers do not work when there is only 1 graph to work on. Using 1 for now.
     n_workers = 32
+    n_workers = 1
     chunck_size = int(len(all_graph_locations) / n_workers)
-    chuncked = [all_graph_locations[i:i + chunck_size] for i in range(0, len(all_graph_locations), chunck_size)]
-
+    chuncked = [all_graph_locations[i:i + chunck_size] for i in range(0, len(all_graph_locations), n_workers)]
     threads = []
     for work in chuncked:
         t = Thread(target=worker, args=(work, corpus_name))

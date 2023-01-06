@@ -7,8 +7,9 @@ git patches by projecting the patch onto a PDG.
 ## How To
 1. Cloning subjects: `./subjects clone_subjects.sh`
 2. Creating synthetic commits `./synthetize_commits.sh`
-3. Generate ∂PDGs for each file `python3 generate_corpus.py out/basic.json subjects/basic .tmp 1 1 ./
-   extractors/codechanges-checker-all.jar`
+3. Generate ∂PDGs for each file (e.g., jfreechart) `python3 tangle_concerns/generate_corpus.py 
+   out/jfreechart/jfreechart_history_filtered_flat.json  subjects/jfreechart .antlr-tmp 1 1 extractors/codechanges-checker-0.1-all.jar
+`
 4. (Merge files into `merged.dot`)
 5. Clean merged.dot `python3 tangle_concerns/scan_and_clean_corpora.py basic`
 6. Evaluate `python ./Util/graph_evaluation_driver.py 1 wl 20 basic`

@@ -2,6 +2,7 @@ import json
 import os
 import shutil
 import subprocess
+import pathlib
 
 from sys import platform
 import logging
@@ -40,7 +41,8 @@ class PDG_Generator(object):
             generate_a_pdg.wait()
 
         elif platform == "darwin": # MacOS
-            generate_a_pdg = subprocess.Popen([self.java_exec, '-cp', self.location,
+            generator_path = pathlib.Path(self.location).resolve()
+            generate_a_pdg = subprocess.Popen([self.java_exec, '-cp', generator_path,
                                                'org.checkerframework.checker.codechanges.FlexemePdgGenerator',
                                                '.' + filename],
                                               cwd=self.repository_location)

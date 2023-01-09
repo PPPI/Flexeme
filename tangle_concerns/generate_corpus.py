@@ -115,7 +115,10 @@ def worker(work, subject_location, id_, temp_loc, extractor_location):
                 previous_sha = to_
                 files_touched = {filename for _, filename, _, _, _ in changes if
                                  os.path.basename(filename).split('.')[-1] == 'java'} # and not filename.endswith("Tests.java")
-                logger.info(f"{len(files_touched)} files affected")
+                logger.info(f"{len(files_touched)} files affected between {from_ + '^'} and {to_}")
+                # There will always be a monotonic number of files because the diff is always compared against the
+                # first commit of the chain (from_^).
+
                 for filename in files_touched:
                     logger.info(f"Generating PDGs for {filename}")
                     try:

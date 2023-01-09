@@ -13,9 +13,11 @@ from deltaPDG.deltaPDG import deltaPDG
 from tangle_concerns.tangle_by_file import tangle_by_file
 
 logging.basicConfig(level=logging.DEBUG,
-                    format='[%(asctime)s] %(levelname)s: %(message)s',
+                    format='[%(asctime)s][%(name)s] %(levelname)s: %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S',
                     handlers=[logging.StreamHandler()])
+
+logging.getLogger("git.cmd").setLevel(logging.INFO)
 
 def mark_originating_commit(dpdg, marked_diff, filename):
     dpdg = dpdg.copy()
@@ -66,7 +68,8 @@ def mark_origin(tangled_diff, atomic_diffs):
 
 
 def worker(work, subject_location, id_, temp_loc, extractor_location):
-    logging.info("Starting worker" + str(id_))
+    logger = logging.getLogger("worker" + str(id_))
+    logger.info("Starting worker" + str(id_))
     repository_name = os.path.basename(subject_location)
     method_fuzziness = 100
     node_fuzziness = 100
@@ -87,14 +90,14 @@ def worker(work, subject_location, id_, temp_loc, extractor_location):
                                          target_filename='after_pdg.dot',
                                          target_location=temp_dir_worker)
         for chain in work:
-            logging.info('Working on chain: %s' % str(chain))
+            logger.info('Working on chain: %s' % str(chain))
             from_ = chain[0]
             from git import Repo
             repo = Repo(v1)
             commit = repo.commit(from_)
 
             if len(commit.parents) == 0:
-                logging.warning(f'Ignoring {from_} because the commit has no parents')
+                logger.warning(f'Ignoring {from_} because the commit has no parents')
                 continue
 
             gh.set_git_to_rev(from_ + '^', v1)
@@ -113,9 +116,9 @@ def worker(work, subject_location, id_, temp_loc, extractor_location):
                 previous_sha = to_
                 files_touched = {filename for _, filename, _, _, _ in changes if
                                  os.path.basename(filename).split('.')[-1] == 'java'} # and not filename.endswith("Tests.java")
-                logging.info(f"{len(files_touched)} files affected")
+                logger.info(f"{len(files_touched)} files affected")
                 for filename in files_touched:
-                    logging.info(f"Generating PDGs for {filename}")
+                    logger.info(f"Generating PDGs for {filename}")
                     try:
                         output_path = './out/corpora_raw/%s/%s_%s/%d/%s.dot' % (
                             repository_name, from_, to_, i, os.path.basename(filename))
@@ -126,7 +129,7 @@ def worker(work, subject_location, id_, temp_loc, extractor_location):
                         # except FileNotFoundError:
                         v1_pdg_generator(filename)
                         v2_pdg_generator(filename)
-                        logging.info(f"PDGs generated for {from_} and {to_}")
+                        logger.info(f"PDGs generated for {from_} and {to_}")
                         delta_gen = deltaPDG(temp_dir_worker + '/before_pdg.dot', m_fuzziness=method_fuzziness,
                                              n_fuzziness=node_fuzziness)
                         delta_pdg = delta_gen(temp_dir_worker + '/after_pdg.dot',
@@ -139,6 +142,7 @@ def worker(work, subject_location, id_, temp_loc, extractor_location):
 
 
 if __name__ == '__main__':
+
     if len(sys.argv) != 7:
         print('To use this script please run as `[python] generate_corpus.py '
               '<json file location> <git location> <temp location> '

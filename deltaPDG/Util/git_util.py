@@ -35,13 +35,13 @@ class Git_Util(object):
 
     @staticmethod
     def set_git_to_rev(sha: str, path: str):
-        git_reset_process = subprocess.Popen(['git', '-c', 'advice.detachedHead=false', 'checkout', '-f', sha], cwd=path)
-        git_reset_process.wait()
+        subprocess.run(['git', '-c', 'advice.detachedHead=false', 'checkout', '-f', sha], cwd=path, check=True,
+                       capture_output=True)
 
     @staticmethod
     def get_commits_for_file(filename: str, path: str) -> List[str]:
         git_log_process = subprocess.Popen(['git', 'log', '--format=oneline', '--follow', '--', filename],
-                                            cwd=path, stdout=subprocess.PIPE)
+                                           cwd=path, stdout=subprocess.PIPE)
         result = list(map(lambda line: line.decode('utf-8', 'replace').strip().split(' ')[0],
                           git_log_process.stdout.readlines()))
         git_log_process.stdout.close()
@@ -69,9 +69,8 @@ class Git_Util(object):
 
     @staticmethod
     def cherry_pick_on_top(sha: str, path: str):
-        git_cherry_process = subprocess.Popen(['git', 'cherry-pick', '--strategy=recursive', '-X', 'theirs', '-n', sha],
-                                              cwd=path)
-        git_cherry_process.wait()
+        subprocess.run(['git', 'cherry-pick', '--strategy=recursive', '-X', 'theirs', '-n', sha],
+                       cwd=path, check=True, capture_output=True)
 
     @staticmethod
     def get_current_head(path: str) -> str:
@@ -174,7 +173,7 @@ class Git_Util(object):
     @staticmethod
     def get_author(sha: str, path: str) -> str:
         commit_show_process = subprocess.Popen(['git', 'show', '--format=fuller', '--unified=0', sha],
-                                                stdout=subprocess.PIPE, cwd=path).stdout
+                                               stdout=subprocess.PIPE, cwd=path).stdout
         show_lines = list(map(lambda line: line.decode('utf-8', 'replace'), commit_show_process.readlines()))
         commit_show_process.close()
 
@@ -192,7 +191,7 @@ class Git_Util(object):
     @staticmethod
     def process_a_commit(sha: str, path: str) -> Tuple[str, List[Tuple[str, str, int, int, str]]]:
         commit_show_process = subprocess.Popen(['git', 'show', '--format=fuller', '--unified=0', sha],
-                                                stdout=subprocess.PIPE, cwd=path).stdout
+                                               stdout=subprocess.PIPE, cwd=path).stdout
         show_lines = list(map(lambda line: line.decode('utf-8', 'replace'), commit_show_process.readlines()))
         commit_show_process.close()
 
@@ -243,7 +242,7 @@ class Git_Util(object):
     @staticmethod
     def process_git_blame(file, path):
         commit_show_process = subprocess.Popen(['git', 'blame', file],
-                                                stdout=subprocess.PIPE, cwd=path).stdout
+                                               stdout=subprocess.PIPE, cwd=path).stdout
         show_lines = list(map(lambda line: line.decode('utf-8', 'replace'), commit_show_process.readlines()))
         commit_show_process.close()
         lines = [(line[:line.index('(') - 1][:8], line[line.index(')') + 2:]) for line in show_lines]

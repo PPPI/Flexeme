@@ -102,7 +102,6 @@ def worker(work, subject_location, id_, temp_loc, extractor_location):
 
             gh.set_git_to_rev(from_ + '^', v1)
             gh.set_git_to_rev(from_, v2)
-
             labeli_changes = dict()
             labeli_changes[0] = gh.process_diff_between_commits(from_ + '^', from_, v2)
             previous_sha = from_

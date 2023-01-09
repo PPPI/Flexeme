@@ -3,6 +3,7 @@ import logging
 import os
 import sys
 from threading import Thread
+from dotenv import load_dotenv
 
 import jsonpickle
 import networkx as nx
@@ -144,7 +145,6 @@ def worker(work, subject_location, id_, temp_loc, extractor_location):
 
 
 if __name__ == '__main__':
-
     if len(sys.argv) != 7:
         print('To use this script please run as `[python] generate_corpus.py '
               '<json file location> <git location> <temp location> '
@@ -158,6 +158,7 @@ if __name__ == '__main__':
 
     os.makedirs(temp_loc, exist_ok=True)
 
+    load_dotenv() # Load .env file
     try:
         with open(json_location) as f:
             list_to_tangle = jsonpickle.decode(f.read())

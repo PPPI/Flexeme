@@ -146,13 +146,13 @@ if __name__ == '__main__':
 
     try:
         with open(json_location) as f:
-            logging.info("Found chains")
             list_to_tangle = jsonpickle.decode(f.read())
     except FileNotFoundError:
         list_to_tangle = tangle_by_file(subject_location, temp_loc)
         with open(json_location, 'w') as f:
             f.write(json.dumps(list_to_tangle))
 
+    logging.info(f"Found {len(list_to_tangle)} commit chains")
     chunck_size = int(len(list_to_tangle) / n_workers)
     list_to_tangle = [list_to_tangle[i:i + chunck_size] for i in range(0, len(list_to_tangle), chunck_size)]
 

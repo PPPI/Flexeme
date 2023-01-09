@@ -89,6 +89,14 @@ def worker(work, subject_location, id_, temp_loc, extractor_location):
         for chain in work:
             logging.info('Working on chain: %s' % str(chain))
             from_ = chain[0]
+            from git import Repo
+            repo = Repo(v1)
+            commit = repo.commit(from_)
+
+            if len(commit.parents) == 0:
+                logging.warning(f'Ignoring {from_} because the commit has no parents')
+                continue
+
             gh.set_git_to_rev(from_ + '^', v1)
             gh.set_git_to_rev(from_, v2)
 

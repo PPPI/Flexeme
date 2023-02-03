@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 import jsonpickle
 import networkx as nx
 
+
 from deltaPDG.Util.generate_pdg import PDG_Generator
 from deltaPDG.Util.git_util import Git_Util
 from deltaPDG.deltaPDG import deltaPDG
@@ -19,6 +20,8 @@ logging.basicConfig(level=logging.DEBUG,
                     handlers=[logging.StreamHandler()])
 
 logging.getLogger("git.cmd").setLevel(logging.INFO)
+
+load_dotenv()  # Load .env file
 
 def mark_originating_commit(dpdg, marked_diff, filename):
     dpdg = dpdg.copy()
@@ -66,6 +69,66 @@ def mark_origin(tangled_diff, atomic_diffs):
             label = max(relevant, default=0)
             output.append((change_type, file, after_coord, before_coord, line, label))
     return output
+
+
+def generate_pdg(revision, repository_path, id_, temp_loc, extractor_location):
+    logging.info(f"Flexeme generate PDG for {revision} in {repository_path}")
+    repository_name = os.path.basename(repository_path)
+    method_fuzziness = 100
+    node_fuzziness = 100
+
+    os.makedirs(temp_loc, exist_ok=True)
+    git_handler = Git_Util(temp_dir=temp_loc)
+
+    with git_handler as gh:
+        v1 = gh.move_git_repo_to_tmp(repository_path)
+        v2 = gh.move_git_repo_to_tmp(repository_path)
+        temp_dir_worker = temp_loc + '/%d' % id_
+        os.makedirs(temp_dir_worker, exist_ok=True)
+        v1_pdg_generator = PDG_Generator(extractor_location=extractor_location,
+                                         repository_location=v1,
+                                         target_filename='before_pdg.dot',
+                                         target_location=temp_dir_worker)
+        v2_pdg_generator = PDG_Generator(extractor_location=extractor_location,
+                                         repository_location=v2,
+                                         target_filename='after_pdg.dot',
+                                         target_location=temp_dir_worker)
+
+        from git import Repo
+        repo = Repo(v1)
+        commit = repo.commit(revision)
+        if len(commit.parents) == 0:
+            logging.warning(f'Ignoring {revision} because the commit has no parents')
+            return
+
+        from_ = revision + '^'
+        to_ = revision
+
+        gh.set_git_to_rev(from_, v1)
+        gh.set_git_to_rev(to_, v2)
+        labeli_changes = dict()
+        labeli_changes[0] = gh.process_diff_between_commits(from_, to_, v2)
+        changes = gh.process_diff_between_commits(from_, to_, v2)
+        files_touched = {filename for _, filename, _, _, _ in changes if
+                             os.path.basename(filename).split('.')[-1] == 'java'} # and not filename.endswith("Tests.java")
+
+        for filename in files_touched:
+            logging.info(f"Generating PDGs for {filename}")
+            try:
+                output_path = './out/corpora_raw/%s/%s_%s/%d/%s.dot' % (
+                    repository_name, from_, to_, i, os.path.basename(filename))
+                v1_pdg_generator(filename)
+                v2_pdg_generator(filename)
+                logging.info(f"PDGs generated for {from_} and {to_}")
+                delta_gen = deltaPDG(temp_dir_worker + '/before_pdg.dot', m_fuzziness=method_fuzziness,
+                                     n_fuzziness=node_fuzziness)
+                delta_pdg = delta_gen(temp_dir_worker + '/after_pdg.dot',
+                                      [ch for ch in changes if ch[1] == filename])
+                delta_pdg = mark_originating_commit(delta_pdg, mark_origin(changes, labeli_changes), filename)
+                os.makedirs(os.path.dirname(output_path), exist_ok=True)
+                nx.drawing.nx_pydot.write_dot(delta_pdg, output_path)
+            except Exception as e:
+                raise e
 
 
 def worker(work, subject_location, id_, temp_loc, extractor_location):

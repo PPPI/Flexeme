@@ -45,7 +45,7 @@ class PDG_Generator(object):
             generate_a_pdg = subprocess.Popen([self.java_exec, '-cp', generator_path,
                                                'org.checkerframework.checker.codechanges.FlexemePdgGenerator',
                                                '.' + filename],
-                                              cwd=os.path.join(self.repository_location, 'source'))
+                                              cwd=self.repository_location)
             generate_a_pdg.wait()
         else:
             print("Platform not supported")

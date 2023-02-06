@@ -137,6 +137,8 @@ def validate(files: List[str], times, k_hop, repository_name, edges_kept="all",
                 if 'color' in data.keys():
                     if 'community' in data.keys():
                         truth.append(int(data['community']))
+
+                        # Get the index for the currently evaluated node
                         i = seeds.index(node) if node in seeds else -1
 
                         if labels is not None and i != -1:

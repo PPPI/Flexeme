@@ -20,6 +20,8 @@ class PDG_Generator(object):
     def __init__(self,
                  extractor_location,
                  repository_location,
+                 sourcepath,
+                 classpath,
                  target_filename="pdg.dot",
                  target_location=os.getcwd()):
         self.location = extractor_location
@@ -27,6 +29,8 @@ class PDG_Generator(object):
         self.target_filename = target_filename
         self.target_location = target_location
         self.java_exec = os.getenv('FLEXEME_JAVA', "java")
+        self.sourcepath = sourcepath
+        self.classpath = classpath
 
     def __call__(self, filename):
         generate_a_pdg = None
@@ -43,8 +47,8 @@ class PDG_Generator(object):
         elif platform == "darwin": # MacOS
             generator_path = pathlib.Path(self.location).resolve()
             generate_a_pdg = subprocess.Popen([self.java_exec, '-cp', generator_path,
-                                               'org.checkerframework.checker.codechanges.FlexemePdgGenerator',
-                                               '.' + filename],
+                                               'org.checkerframework.flexeme.PdgExtractor',
+                                               '.' + filename, self.sourcepath, self.classpath],
                                               cwd=self.repository_location)
             generate_a_pdg.wait()
         else:

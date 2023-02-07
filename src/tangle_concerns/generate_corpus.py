@@ -71,7 +71,7 @@ def mark_origin(tangled_diff, atomic_diffs):
     return output
 
 
-def generate_pdg(revision, repository_path, id_, temp_loc, extractor_location):
+def generate_pdg(revision, repository_path, id_, temp_loc, extractor_location, sourcepath, classpath):
     logging.info(f"Flexeme generate PDG for {revision} in {repository_path}")
     repository_name = os.path.basename(repository_path)
     method_fuzziness = 100
@@ -88,11 +88,17 @@ def generate_pdg(revision, repository_path, id_, temp_loc, extractor_location):
         v1_pdg_generator = PDG_Generator(extractor_location=extractor_location,
                                          repository_location=v1,
                                          target_filename='before_pdg.dot',
-                                         target_location=temp_dir_worker)
+                                         target_location=temp_dir_worker,
+                                         sourcepath=sourcepath,
+                                         classpath=classpath,
+                                         )
         v2_pdg_generator = PDG_Generator(extractor_location=extractor_location,
                                          repository_location=v2,
                                          target_filename='after_pdg.dot',
-                                         target_location=temp_dir_worker)
+                                         target_location=temp_dir_worker,
+                                         sourcepath=sourcepath,
+                                         classpath=classpath,
+                                         )
 
         from git import Repo
         repo = Repo(v1)
@@ -115,10 +121,14 @@ def generate_pdg(revision, repository_path, id_, temp_loc, extractor_location):
         for filename in files_touched:
             logging.info(f"Generating PDGs for {filename}")
             try:
-                output_path = './out/corpora_raw/%s/%s_%s/%d/%s.dot' % (
-                    repository_name, from_, to_, i, os.path.basename(filename))
+                output_path = './out/corpora_raw/%s/%s_%s/%s.dot' % (
+                    repository_name, from_, to_, os.path.basename(filename))
+                logging.info(f"Generating PDG for {filename}@{from_}")
                 v1_pdg_generator(filename)
+                logging.info(f"Generating PDG for {filename}@{to_}")
                 v2_pdg_generator(filename)
+
+
                 logging.info(f"PDGs generated for {from_} and {to_}")
                 delta_gen = deltaPDG(temp_dir_worker + '/before_pdg.dot', m_fuzziness=method_fuzziness,
                                      n_fuzziness=node_fuzziness)

@@ -1,6 +1,6 @@
 import networkx as nx
 
-from deltaPDG.Util.pygraph_util import get_context_from_nxgraph
+from flexeme.deltaPDG.Util.pygraph_util import get_context_from_nxgraph
 
 
 def slice_delta(graph):

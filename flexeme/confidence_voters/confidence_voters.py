@@ -6,9 +6,9 @@ from multiprocessing.pool import ThreadPool
 import networkx as nx
 import numpy as np
 
-from confidence_voters.Util.voter_util import integer_distance_between_intervals, prefix_distance, call_graph_distance, \
+from flexeme.confidence_voters.Util.voter_util import integer_distance_between_intervals, prefix_distance, call_graph_distance, \
     cluster_from_voter_affinity, generate_empty_affinity
-from deltaPDG.Util.pygraph_util import read_graph_from_dot, obj_dict_to_networkx, get_context_from_nxgraph
+from flexeme.deltaPDG.Util.pygraph_util import read_graph_from_dot, obj_dict_to_networkx, get_context_from_nxgraph
 
 
 def file_distance(file_length_map):

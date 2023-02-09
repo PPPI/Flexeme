@@ -3,10 +3,11 @@ import os
 
 import networkx as nx
 
-from tangle_concerns.generate_corpus import generate_pdg
-from deltaPDG.Util.merge_deltaPDGs import merge_deltas_for_a_commit
-from Util.general_util import get_pattern_paths
-from tangle_concerns.scan_and_clean_corpora import clean_graph
+from flexeme.tangle_concerns.generate_corpus import generate_pdg
+from flexeme.deltaPDG.Util.merge_deltaPDGs import merge_deltas_for_a_commit
+from flexeme.Util.general_util import get_pattern_paths
+from flexeme.tangle_concerns.scan_and_clean_corpora import clean_graph
+
 
 def merge_files_pdg(path_to_commit):
     paths = get_pattern_paths('*.java.dot', path_to_commit)

@@ -17,9 +17,9 @@ from nltk.stem import PorterStemmer
 from sklearn.cluster import AgglomerativeClustering
 from tqdm import tqdm
 
-from Util.evaluation import evaluate
-from confidence_voters.confidence_voters import remove_all_except
-from deltaPDG.Util.pygraph_util import obj_dict_to_networkx, read_graph_from_dot
+from flexeme.Util.evaluation import evaluate
+from flexeme.confidence_voters.confidence_voters import remove_all_except
+from flexeme.deltaPDG.Util.pygraph_util import obj_dict_to_networkx, read_graph_from_dot
 
 
 def split_camel_case(input: str) -> List[str]:
@@ -103,7 +103,7 @@ def validate(files: List[str], times, k_hop, repository_name, edges_kept="all",
                         wl_subtree.fit([graph_to_grakel(g1, with_data, with_call, with_name)])
                         similarity = wl_subtree.transform([graph_to_grakel(g2, with_data, with_call, with_name)])[0][0]
                         similarities[(list_of_graphs.index(g1), list_of_graphs.index(g2))] = similarity
-                        logging.info(similarity)
+                        # logging.info(similarity)
 
                     n = len(list_of_graphs)
                     logging.info(f"n={n}")

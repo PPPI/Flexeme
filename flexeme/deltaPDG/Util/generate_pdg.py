@@ -9,8 +9,8 @@ import logging
 
 import networkx as nx
 
-from deltaPDG.Util.merge_nameflow import add_nameflow_edges
-from deltaPDG.Util.pygraph_util import read_graph_from_dot, obj_dict_to_networkx
+from flexeme.deltaPDG.Util.merge_nameflow import add_nameflow_edges
+from flexeme.deltaPDG.Util.pygraph_util import read_graph_from_dot, obj_dict_to_networkx
 
 class PDG_Generator(object):
     """

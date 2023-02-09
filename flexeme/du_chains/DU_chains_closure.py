@@ -7,8 +7,8 @@ import networkx as nx
 import numpy as np
 from tqdm import tqdm
 
-from Util.evaluation import evaluate
-from deltaPDG.Util.pygraph_util import read_graph_from_dot, obj_dict_to_networkx
+from flexeme.Util.evaluation import evaluate
+from flexeme.deltaPDG.Util.pygraph_util import read_graph_from_dot, obj_dict_to_networkx
 
 
 def extract_DU_chains_from_delta(graph):

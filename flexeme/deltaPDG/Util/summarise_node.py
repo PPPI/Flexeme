@@ -3,7 +3,7 @@ from collections import deque
 import networkx as nx
 import numpy as np
 
-from deltaPDG.Util.pygraph_util import get_context_from_nxgraph
+from flexeme.deltaPDG.Util.pygraph_util import get_context_from_nxgraph
 
 
 def compress_delta(graph, node_context_size=1, line_context_size=3):

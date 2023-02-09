@@ -6,8 +6,8 @@ import sys
 import jsonpickle
 from tqdm import tqdm
 
-from Util.general_util import get_pattern_paths
-from wl_kernel.wl_kernel_untangle import validate
+from flexeme.Util.general_util import get_pattern_paths
+from flexeme.wl_kernel.wl_kernel_untangle import validate
 
 if __name__ == '__main__':
     times = int(sys.argv[1])

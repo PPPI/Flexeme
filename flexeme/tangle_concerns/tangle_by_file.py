@@ -10,7 +10,7 @@ from typing import List, Tuple, Any
 
 import numpy as np
 
-from deltaPDG.Util.git_util import Git_Util
+from flexeme.deltaPDG.Util.git_util import Git_Util
 
 KEYWORDS = {'FIX', 'FIXES', 'FIXED', 'IMPLEMENTS', 'IMPLEMENTED', 'IMPLEMENT', 'BUG', 'FEATURE', }
 

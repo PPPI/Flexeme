@@ -5,8 +5,8 @@ from threading import Thread
 
 import networkx as nx
 
-from Util.general_util import get_pattern_paths
-from deltaPDG.Util.pygraph_util import read_graph_from_dot, obj_dict_to_networkx
+from flexeme.Util.general_util import get_pattern_paths
+from flexeme.deltaPDG.Util.pygraph_util import read_graph_from_dot, obj_dict_to_networkx
 
 
 def clean_graph(graph_location, corpus_name):

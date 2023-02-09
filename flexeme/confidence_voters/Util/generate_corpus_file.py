@@ -12,7 +12,7 @@ import scipy.spatial
 import scipy.special
 from tqdm import tqdm
 
-from deltaPDG.Util.git_util import Git_Util
+from flexeme.deltaPDG.Util.git_util import Git_Util
 
 
 def build_corpus(json_location_, subject_location_, temp_dir_):

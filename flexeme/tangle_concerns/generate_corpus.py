@@ -9,10 +9,10 @@ import jsonpickle
 import networkx as nx
 
 
-from deltaPDG.Util.generate_pdg import PDG_Generator
-from deltaPDG.Util.git_util import Git_Util
-from deltaPDG.deltaPDG import deltaPDG
-from tangle_concerns.tangle_by_file import tangle_by_file
+from flexeme.deltaPDG.Util.generate_pdg import PDG_Generator
+from flexeme.deltaPDG.Util.git_util import Git_Util
+from flexeme.deltaPDG.deltaPDG import deltaPDG
+from flexeme.tangle_concerns.tangle_by_file import tangle_by_file
 
 logging.basicConfig(level=logging.DEBUG,
                     format='[%(asctime)s][%(name)s] %(levelname)s: %(message)s',

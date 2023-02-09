@@ -2,9 +2,9 @@ from typing import List, Tuple
 
 import networkx as nx
 
-from .Util.mark_pdgs import mark_pdg_nodes
-from .Util.merge_marked_pdgs import Marked_Merger
-from .Util.pygraph_util import read_graph_from_dot, obj_dict_to_networkx
+from flexeme.deltaPDG.Util.mark_pdgs import mark_pdg_nodes
+from flexeme.deltaPDG.Util.merge_marked_pdgs import Marked_Merger
+from flexeme.deltaPDG.Util.pygraph_util import read_graph_from_dot, obj_dict_to_networkx
 
 
 class deltaPDG(object):

@@ -4,8 +4,8 @@ import os
 
 import networkx as nx
 
-from Util.general_util import get_pattern_paths
-from deltaPDG.Util.pygraph_util import read_graph_from_dot, obj_dict_to_networkx, get_context_from_nxgraph
+from flexeme.Util.general_util import get_pattern_paths
+from flexeme.deltaPDG.Util.pygraph_util import read_graph_from_dot, obj_dict_to_networkx, get_context_from_nxgraph
 
 
 def find_entry_and_exit(context, graph):

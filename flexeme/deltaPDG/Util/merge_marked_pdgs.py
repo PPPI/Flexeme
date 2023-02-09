@@ -1,4 +1,4 @@
-from deltaPDG.Util.equivalence_util import Eq_Utils
+from flexeme.deltaPDG.Util.equivalence_util import Eq_Utils
 
 
 class Marked_Merger(object):

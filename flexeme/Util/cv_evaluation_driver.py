@@ -8,12 +8,12 @@ import numpy as np
 import scipy.sparse
 from tqdm import tqdm
 
-from Util.evaluation import evaluate
-from Util.general_util import get_pattern_paths
-from confidence_voters.Util.generate_corpus_file import build_occurrence_matrix, build_corpus
-from confidence_voters.confidence_voters import cluster_diffs, convert_diff_to_diff_regions
-from confidence_voters.confidence_voters_graph_only import cluster_diffs as graph_cluster_diffs
-from deltaPDG.Util.pygraph_util import read_graph_from_dot, obj_dict_to_networkx, get_context_from_nxgraph
+from flexeme.Util.evaluation import evaluate
+from flexeme.Util.general_util import get_pattern_paths
+from flexeme.confidence_voters.Util.generate_corpus_file import build_occurrence_matrix, build_corpus
+from flexeme.confidence_voters.confidence_voters import cluster_diffs, convert_diff_to_diff_regions
+from flexeme.confidence_voters.confidence_voters_graph_only import cluster_diffs as graph_cluster_diffs
+from flexeme.deltaPDG.Util.pygraph_util import read_graph_from_dot, obj_dict_to_networkx, get_context_from_nxgraph
 
 
 def driver(times_, out_name_, projects_, worker_wrapper_, temp_dir_):

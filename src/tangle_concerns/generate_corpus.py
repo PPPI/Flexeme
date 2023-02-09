@@ -121,8 +121,8 @@ def generate_pdg(revision, repository_path, id_, temp_loc, extractor_location, s
         for filename in files_touched:
             logging.info(f"Generating PDGs for {filename}")
             try:
-                output_path = './out/corpora_raw/%s/%s_%s/%s.dot' % (
-                    repository_name, from_, to_, os.path.basename(filename))
+                output_path = './out/corpora_raw/%s/%s/%s.dot' % (
+                    repository_name, to_, os.path.basename(filename))
                 logging.info(f"Generating PDG for {filename}@{from_}")
                 v1_pdg_generator(filename)
                 logging.info(f"Generating PDG for {filename}@{to_}")

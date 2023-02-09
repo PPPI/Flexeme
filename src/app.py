@@ -1,6 +1,18 @@
 import sys
+import os
+
+import networkx as nx
 
 from tangle_concerns.generate_corpus import generate_pdg
+from deltaPDG.Util.merge_deltaPDGs import merge_deltas_for_a_commit
+from Util.general_util import get_pattern_paths
+
+
+def merge_files_pdg(path_to_commit):
+    paths = get_pattern_paths('*.java.dot', path_to_commit)
+    print(paths)
+    merged = merge_deltas_for_a_commit(paths)
+    nx.drawing.nx_pydot.write_dot(merged, os.path.join(path_to_commit, 'merged.dot'))
 
 
 def untangle(repository_path, revision, sourcepath, classpath):
@@ -13,6 +25,7 @@ def untangle(repository_path, revision, sourcepath, classpath):
     # -> pdg.dot
 
     # merge pdg: all pdg.dot for each file to merged.dot
+    merge_files_pdg(os.path.join('./out/corpora_raw', revision))
 
     # wl_kernel_untangle_validate(merged.dot)
 

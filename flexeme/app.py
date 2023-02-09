@@ -7,6 +7,7 @@ from flexeme.tangle_concerns.generate_corpus import generate_pdg
 from flexeme.deltaPDG.Util.merge_deltaPDGs import merge_deltas_for_a_commit
 from flexeme.Util.general_util import get_pattern_paths
 from flexeme.tangle_concerns.scan_and_clean_corpora import clean_graph
+from flexeme.wl_kernel.wl_kernel_untangle import validate
 
 
 def merge_files_pdg(path_to_commit):
@@ -30,13 +31,15 @@ def untangle(repository_path, revision, sourcepath, classpath):
     # merge pdg: all pdg.dot for each file to merged.dot
     merged_path = merge_files_pdg(os.path.join('./out/corpora_raw', corpus_name, revision))
 
-    # cleaning and normalize the groups accross all changed files.
+    # cleaning and normalize the groups across all changed files.
     clean_graph(merged_path, corpus_name)
 
     # wl_kernel_untangle_validate(merged.dot)
+    validate([merged_path], 1, 2, "Cli-1")
+    # -> Results in data/corpora_clean/Cli-1/Cli-1/1/merged_output_wl_x.dot
+    # -> Nodes with X:.... are labelled. X: is the label.s
 
-    #     export_results
-    pass
+    # Converting results to the benchmark format is done in the benchmark itself.
 
 
 def main():

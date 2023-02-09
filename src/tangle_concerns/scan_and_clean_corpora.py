@@ -1,3 +1,4 @@
+import logging
 import os
 import sys
 from threading import Thread
@@ -8,43 +9,47 @@ from Util.general_util import get_pattern_paths
 from deltaPDG.Util.pygraph_util import read_graph_from_dot, obj_dict_to_networkx
 
 
+def clean_graph(graph_location, corpus_name):
+    data_point_name = os.path.basename(os.path.dirname(os.path.dirname(graph_location)))
+    if os.path.exists(os.path.join('.', 'data', 'corpora_clean', corpus_name, data_point_name)):
+        print('[Scan and clean] Skipping %s as it exists'
+              '' % data_point_name)
+        return
+    print('[Scan and clean] Cleaning data-point %s' % data_point_name)
+
+    graph = obj_dict_to_networkx(read_graph_from_dot(graph_location))
+
+    # Get actual number of communities
+    communities = set()
+    for node, data in list(graph.nodes(data=True)):
+        if 'community' in data.keys():
+            communities.add(data['community'])
+        if 'color' in data.keys() and 'community' not in data.keys():
+            communities.add('0')
+            graph.node[node]['community'] = '0'
+    communities = sorted(list(communities))
+
+    nr_concepts = str(len(communities))
+
+    if len(communities) > 0:
+        # Normalise labels
+        for node, data in list(graph.nodes(data=True)):
+            if 'community' in data.keys():
+                graph.node[node]['community'] = communities.index(data['community'])
+
+        output_path = os.path.join('.', 'data', 'corpora_clean',
+                                   corpus_name, data_point_name, nr_concepts, 'merged.dot')
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        nx.drawing.nx_pydot.write_dot(graph, output_path)
+
 def worker(all_graph_locations, corpus_name):
     for graph_location in all_graph_locations:
         print(graph_location)
-        data_point_name = os.path.basename(os.path.dirname(os.path.dirname(graph_location)))
-        if os.path.exists(os.path.join('.', 'data', 'corpora_clean', corpus_name, data_point_name)):
-            print('[Scan and clean] Skipping %s as it exists'
-                  '' % data_point_name)
-            return
-        print('[Scan and clean] Cleaning data-point %s' % data_point_name)
-
         try:
-            graph = obj_dict_to_networkx(read_graph_from_dot(graph_location))
+            clean_graph(graph_location, corpus_name)
         except (TypeError, ValueError):
+            logging.error(f"Cannot clean {graph_location}")
             continue
-
-        # Get actual number of communities
-        communities = set()
-        for node, data in list(graph.nodes(data=True)):
-            if 'community' in data.keys():
-                communities.add(data['community'])
-            if 'color' in data.keys() and 'community' not in data.keys():
-                communities.add('0')
-                graph.node[node]['community'] = '0'
-        communities = sorted(list(communities))
-
-        nr_concepts = str(len(communities))
-
-        if len(communities) > 0:
-            # Normalise labels
-            for node, data in list(graph.nodes(data=True)):
-                if 'community' in data.keys():
-                    graph.node[node]['community'] = communities.index(data['community'])
-
-            output_path = os.path.join('.', 'data', 'corpora_clean',
-                                       corpus_name, data_point_name, nr_concepts, 'merged.dot')
-            os.makedirs(os.path.dirname(output_path), exist_ok=True)
-            nx.drawing.nx_pydot.write_dot(graph, output_path)
 
 
 if __name__ == '__main__':

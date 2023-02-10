@@ -48,7 +48,7 @@ class PDG_Generator(object):
             generator_path = pathlib.Path(self.location).resolve()
             generate_a_pdg = subprocess.Popen([self.java_exec, '-cp', generator_path,
                                                'org.checkerframework.flexeme.PdgExtractor',
-                                               '.' + filename, self.sourcepath, self.classpath],
+                                                filename, self.sourcepath, self.classpath],
                                               cwd=self.repository_location)
             generate_a_pdg.wait()
         else:

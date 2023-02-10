@@ -119,23 +119,26 @@ def generate_pdg(revision, repository_path, id_, temp_loc, extractor_location, s
                              os.path.basename(filename).split('.')[-1] == 'java'} # and not filename.endswith("Tests.java")
 
         for filename in files_touched:
+            local_filename = os.path.normpath(filename.lstrip('/')) # filename is local to the repository. It
+            # shouldn't start with a '/'
+            # we keep filename as is otherwise it breaks the comparison in the diff in mark_originating_commit()
             logging.info(f"Generating PDGs for {filename}")
             try:
-                output_path = './out/corpora_raw/%s/%s/%s.dot' % (
-                    repository_name, to_, os.path.basename(filename))
+                output_path = './out/corpora_raw/%s/%s/%s/%s.dot' % (
+                    repository_name, to_, 0, os.path.basename(filename))
                 logging.info(f"Generating PDG for {filename}@{from_}")
-                v1_pdg_generator(filename)
+                v1_pdg_generator(local_filename)
                 logging.info(f"Generating PDG for {filename}@{to_}")
-                v2_pdg_generator(filename)
+                v2_pdg_generator(local_filename)
 
-
-                logging.info(f"PDGs generated for {from_} and {to_}")
+                logging.info(f"Building ∂PDG for {filename}")
                 delta_gen = deltaPDG(temp_dir_worker + '/before_pdg.dot', m_fuzziness=method_fuzziness,
                                      n_fuzziness=node_fuzziness)
                 delta_pdg = delta_gen(temp_dir_worker + '/after_pdg.dot',
                                       [ch for ch in changes if ch[1] == filename])
                 delta_pdg = mark_originating_commit(delta_pdg, mark_origin(changes, labeli_changes), filename)
                 os.makedirs(os.path.dirname(output_path), exist_ok=True)
+                nx.set_node_attributes(delta_pdg, local_filename, "filepath")
                 nx.drawing.nx_pydot.write_dot(delta_pdg, output_path)
             except Exception as e:
                 raise e
@@ -205,7 +208,6 @@ def worker(work, subject_location, id_, temp_loc, extractor_location):
                         # except FileNotFoundError:
                         v1_pdg_generator(filename)
                         v2_pdg_generator(filename)
-                        logger.info(f"PDGs generated for {from_} and {to_}")
                         delta_gen = deltaPDG(temp_dir_worker + '/before_pdg.dot', m_fuzziness=method_fuzziness,
                                              n_fuzziness=node_fuzziness)
                         delta_pdg = delta_gen(temp_dir_worker + '/after_pdg.dot',

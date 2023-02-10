@@ -83,7 +83,7 @@ def validate(files: List[str], times, k_hop, repository_name, edges_kept="all",
     def worker(work):
         for graph_location in tqdm(work, leave=False):
             chain = os.path.basename(os.path.dirname(os.path.dirname(graph_location)))
-            q = int(os.path.basename(os.path.dirname(graph_location)))
+            q = int(os.path.basename(os.path.dirname(graph_location))) # q is for concepts
             graph = obj_dict_to_networkx(read_graph_from_dot(graph_location))
             graph = remove_all_except(graph, edges_kept)
 

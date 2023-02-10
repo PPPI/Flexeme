@@ -29,7 +29,7 @@ def untangle(repository_path, revision, sourcepath, classpath):
     generate_pdg(revision, repository_path, id, temp_path, extractor_path, sourcepath, classpath)
 
     # merge pdg: all pdg.dot for each file to merged.dot
-    merged_path = merge_files_pdg(os.path.join('./out/corpora_raw', corpus_name, revision))
+    merged_path = merge_files_pdg(os.path.join('./out/corpora_raw', corpus_name, revision, '0'))
 
     # cleaning and normalize the groups across all changed files.
     clean_graph(merged_path, corpus_name)

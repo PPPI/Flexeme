@@ -155,6 +155,7 @@ def validate(files: List[str], times, k_hop, repository_name, edges_kept="all",
             truth = np.asarray(truth)
             label = np.asarray(label)
             acc, overlap = evaluate(truth[label > -1], label[label > -1], q=1 if len(label) == 0 else np.max(label) + 1)
+            os.makedirs('./out/%s' % repository_name, exist_ok=True)
             with open('./out/%s/wl_%s_%d_results_%s.csv' % (repository_name, edges_kept, k_hop, suffix), 'a') as f:
                 f.write(chain + ',' + str(q) + ',' + str(acc) + ',' + str(overlap) + ',' + str(time_) + '\n')
             logging.info(truth)

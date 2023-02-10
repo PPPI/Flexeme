@@ -11,10 +11,10 @@ from flexeme.deltaPDG.Util.pygraph_util import read_graph_from_dot, obj_dict_to_
 
 def clean_graph(graph_location, corpus_name):
     data_point_name = os.path.basename(os.path.dirname(os.path.dirname(graph_location)))
-    if os.path.exists(os.path.join('.', 'data', 'corpora_clean', corpus_name, data_point_name)):
-        print('[Scan and clean] Skipping %s as it exists'
-              '' % data_point_name)
-        return
+    # if os.path.exists(os.path.join('.', 'data', 'corpora_clean', corpus_name, data_point_name)):
+    #     print('[Scan and clean] Skipping %s as it exists'
+    #           '' % data_point_name)
+    #     return
     print('[Scan and clean] Cleaning data-point %s' % data_point_name)
 
     graph = obj_dict_to_networkx(read_graph_from_dot(graph_location))
@@ -28,7 +28,6 @@ def clean_graph(graph_location, corpus_name):
             communities.add('0')
             graph.node[node]['community'] = '0'
     communities = sorted(list(communities))
-
     nr_concepts = str(len(communities))
 
     if len(communities) > 0:
@@ -41,6 +40,9 @@ def clean_graph(graph_location, corpus_name):
                                    corpus_name, data_point_name, nr_concepts, 'merged.dot')
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
         nx.drawing.nx_pydot.write_dot(graph, output_path)
+        return output_path
+    else:
+        logging.warning(f"No communities detected for {graph_location}")
 
 def worker(all_graph_locations, corpus_name):
     for graph_location in all_graph_locations:

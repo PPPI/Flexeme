@@ -32,10 +32,9 @@ def untangle(repository_path, revision, sourcepath, classpath):
     merged_path = merge_files_pdg(os.path.join('./out/corpora_raw', corpus_name, revision, '0'))
 
     # cleaning and normalize the groups across all changed files.
-    clean_graph(merged_path, corpus_name)
+    clean_path = clean_graph(merged_path, corpus_name)
 
-    # wl_kernel_untangle_validate(merged.dot)
-    validate([merged_path], 1, 2, "Cli-1")
+    validate([clean_path], 1, 2, "Cli-1")
     # -> Results in data/corpora_clean/Cli-1/Cli-1/1/merged_output_wl_x.dot
     # -> Nodes with X:.... are labelled. X: is the label.s
 

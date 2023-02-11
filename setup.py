@@ -1,14 +1,14 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
     name='flexeme',
-    version='0.0.1',
-    packages=['Util', 'deltaPDG', 'deltaPDG.Util', 'tangle_concerns', 'wl_kernel', 'confidence_voters',
-              'confidence_voters/Util'],
-    url='',
+    version='0.1.0',
+    packages=find_packages(include=['flexeme', 'flexeme.*']),
     license='MIT',
-    author='',
-    author_email='',
-    description='', install_requires=['jsonpickle', 'scipy', 'tqdm', 'networkx', 'numpy', 'rapidfuzz', 'pygraphviz',
-                                      'pydot', 'grakel', 'nltk']
+    description='',
+    install_requires=['jsonpickle', 'scipy', 'tqdm', 'networkx', 'numpy', 'rapidfuzz', 'pygraphviz',
+                      'pydot', 'grakel', 'nltk', 'python-dotenv','GitPython'],
+    entry_points={
+        'console_scripts': ['flexeme=flexeme.app:main']
+    }
 )

@@ -6,6 +6,9 @@ git patches by projecting the patch onto a PDG.
 
 Please see [ORIGINAL_INSTRUCTIONS](./ORIGINAL_INSTRUCTIONS.md) document for the documentation of the original fork.
 
+## Requirements
+**Requires python 3.8.**
+
 ## How To
 1. Cloning subjects: `./subjects clone_subjects.sh`
 2. Creating synthetic commits `./synthetize_commits.sh`

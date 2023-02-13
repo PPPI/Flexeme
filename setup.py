@@ -6,7 +6,8 @@ setup(
     packages=find_packages(include=['flexeme', 'flexeme.*']),
     license='MIT',
     description='',
-    install_requires=['jsonpickle', 'scipy', 'tqdm', 'networkx', 'numpy', 'rapidfuzz', 'pygraphviz',
+    python_requires='==3.8.15',
+    install_requires=['jsonpickle', 'scipy', 'tqdm', 'networkx==2.3', 'numpy', 'rapidfuzz', 'pygraphviz',
                       'pydot', 'grakel', 'nltk', 'python-dotenv','GitPython'],
     entry_points={
         'console_scripts': ['flexeme=flexeme.app:main']

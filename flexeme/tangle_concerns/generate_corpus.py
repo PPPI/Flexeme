@@ -118,7 +118,7 @@ def generate_pdg(revision, repository_path, id_, temp_loc, extractor_location, s
         files_touched = {filename for _, filename, _, _, _ in changes if
                              os.path.basename(filename).split('.')[-1] == 'java'} # and not filename.endswith("Tests.java")
 
-        for filename in files_touched:
+        for filename in sorted(files_touched):
             local_filename = os.path.normpath(filename.lstrip('/')) # filename is local to the repository. It
             # shouldn't start with a '/'
             # we keep filename as is otherwise it breaks the comparison in the diff in mark_originating_commit()

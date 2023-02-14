@@ -9,6 +9,7 @@ import logging
 
 import networkx as nx
 
+import flexeme
 from flexeme.deltaPDG.Util.merge_nameflow import add_nameflow_edges
 from flexeme.deltaPDG.Util.pygraph_util import read_graph_from_dot, obj_dict_to_networkx
 
@@ -24,7 +25,8 @@ class PDG_Generator(object):
                  classpath,
                  target_filename="pdg.dot",
                  target_location=os.getcwd()):
-        self.location = extractor_location
+        flexeme_root = pathlib.Path(os.path.dirname(flexeme.__file__)).parent
+        self.location = flexeme_root / extractor_location
         self.repository_location = repository_location
         self.target_filename = target_filename
         self.target_location = target_location
@@ -45,7 +47,7 @@ class PDG_Generator(object):
             generate_a_pdg.wait()
 
         elif platform == "darwin": # MacOS
-            generator_path = pathlib.Path(self.location).resolve()
+            generator_path = self.location.resolve()
             generate_a_pdg = subprocess.Popen([self.java_exec, '-cp', generator_path,
                                                'org.checkerframework.flexeme.PdgExtractor',
                                                 filename, self.sourcepath, self.classpath],

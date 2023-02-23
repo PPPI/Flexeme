@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Creates synthethic commits for all projects
-# python3 tangle_concerns/tangle_by_file.py jfreechart
+# Creates synthetic commits for all projects in the dataset.
+# Results are written to `out/<repository>/<repository>_history_filtered_flat.json`.
 python3 tangle_concerns/tangle_by_file.py glide
 python3 tangle_concerns/tangle_by_file.py netty
 python3 tangle_concerns/tangle_by_file.py antlr4

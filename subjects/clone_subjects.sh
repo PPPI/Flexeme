@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Projects from SmartCommit paper.
 git clone https://github.com/apache/rocketmq.git
 git clone https://github.com/google/nomulus.git
 git clone https://github.com/bumptech/glide.git

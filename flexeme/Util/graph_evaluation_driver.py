@@ -6,6 +6,8 @@ import jsonpickle
 from tqdm import tqdm
 
 from flexeme.Util.general_util import get_pattern_paths
+from flexeme.wl_kernel.wl_kernel_untangle import validate as wl_validate
+from flexeme.du_chains.DU_chains_closure import validate as du_validate
 
 logging.basicConfig(level=logging.DEBUG,
                     format='[%(asctime)s] %(levelname)s: %(message)s',
@@ -17,12 +19,10 @@ if __name__ == '__main__':
     mode = sys.argv[2].lower()  # Options are du and wl
     if mode == 'du':
         logging.info("du mode")
-        from flexeme.du_chains.DU_chains_closure import validate as du_validate
         repository_names = sys.argv[3:]
         out_name = 'du_results_raw'
     else:
         logging.info("wl mode")
-        from flexeme.wl_kernel.wl_kernel_untangle import validate as wl_validate
         edges_kept = 'all'
         k_hop = int(sys.argv[3])
         repository_names = sys.argv[4:]

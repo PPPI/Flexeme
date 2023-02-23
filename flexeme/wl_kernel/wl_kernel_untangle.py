@@ -70,9 +70,10 @@ def deltaPDG_to_list_of_Graphs(delta: nx.MultiDiGraph, khop_k: int = 1) -> Tuple
 
 
 def validate(files: List[str], times, k_hop, repository_name, edges_kept="all",
-             with_data: bool = True, with_call: bool = True, with_name: bool = True, suffix="raw"):
+             with_data: bool = True, with_call: bool = True, with_name: bool = True, suffix="raw", out_file=None):
     if not len(files):
         logging.error("No files to validate.")
+        return
     n_workers = 1
     chunck_size = int(len(files) / n_workers)
     while (chunck_size == 0) and (n_workers > 1):
@@ -80,7 +81,7 @@ def validate(files: List[str], times, k_hop, repository_name, edges_kept="all",
         chunck_size = int(len(files) / n_workers)
     chuncked = [files[i:i + chunck_size] for i in range(0, len(files), chunck_size)]
 
-    def worker(work):
+    def worker(work, out_file=None):
         for graph_location in tqdm(work, leave=False):
             chain = os.path.basename(os.path.dirname(os.path.dirname(graph_location)))
             q = int(os.path.basename(os.path.dirname(graph_location))) # q is for concepts
@@ -132,7 +133,6 @@ def validate(files: List[str], times, k_hop, repository_name, edges_kept="all",
 
             truth = list()
             label = list()
-            logging.info(labels)
             for node, data in graph.nodes(data=True):
                 if 'color' in data.keys():
                     if 'community' in data.keys():
@@ -150,7 +150,9 @@ def validate(files: List[str], times, k_hop, repository_name, edges_kept="all",
                             label.append(-1)
                             graph.add_node(node, **data)
 
-            nx.drawing.nx_pydot.write_dot(graph, graph_location[:-4] + '_output_wl_%d.dot' % k_hop)
+            if out_file is None:
+                out_file = graph_location[:-4] + '_output_wl_%d.dot' % k_hop
+            nx.drawing.nx_pydot.write_dot(graph, out_file)
 
             truth = np.asarray(truth)
             label = np.asarray(label)
@@ -158,12 +160,10 @@ def validate(files: List[str], times, k_hop, repository_name, edges_kept="all",
             os.makedirs('./out/%s' % repository_name, exist_ok=True)
             with open('./out/%s/wl_%s_%d_results_%s.csv' % (repository_name, edges_kept, k_hop, suffix), 'a') as f:
                 f.write(chain + ',' + str(q) + ',' + str(acc) + ',' + str(overlap) + ',' + str(time_) + '\n')
-            logging.info(truth)
-            logging.info(label)
 
     threads = []
     for work in chuncked:
-        t = Thread(target=worker, args=(work,))
+        t = Thread(target=worker, args=(work,out_file))
         threads.append(t)
         t.start()
 

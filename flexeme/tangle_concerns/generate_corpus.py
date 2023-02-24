@@ -161,11 +161,17 @@ def worker(work, subject_location, id_, temp_loc, extractor_location):
         v1_pdg_generator = PDG_Generator(extractor_location=extractor_location,
                                          repository_location=v1,
                                          target_filename='before_pdg.dot',
-                                         target_location=temp_dir_worker)
+                                         target_location=temp_dir_worker,
+                                         sourcepath=subject_location,
+                                         classpath=subject_location
+                                         )
         v2_pdg_generator = PDG_Generator(extractor_location=extractor_location,
                                          repository_location=v2,
                                          target_filename='after_pdg.dot',
-                                         target_location=temp_dir_worker)
+                                         target_location=temp_dir_worker,
+                                         sourcepath=subject_location,
+                                         classpath=subject_location
+                                         )
         for chain in work:
             logger.info('Working on chain: %s' % str(chain))
             from_ = chain[0]
@@ -227,8 +233,9 @@ if __name__ == '__main__':
         exit(1)
     json_location = sys.argv[1]
     subject_location = sys.argv[2]
-    n_workers = int(sys.argv[5])
     temp_loc = sys.argv[3]
+    id_ = int(sys.argv[4])
+    n_workers = int(sys.argv[5])
     extractor_location = sys.argv[6]
 
     os.makedirs(temp_loc, exist_ok=True)
@@ -247,7 +254,6 @@ if __name__ == '__main__':
     list_to_tangle = [list_to_tangle[i:i + chunck_size] for i in range(0, len(list_to_tangle), chunck_size)]
 
     threads = []
-    id_ = int(sys.argv[4])
     for work in list_to_tangle:
         t = Thread(target=worker, args=(work, subject_location, id_, temp_loc, extractor_location))
         id_ += 1

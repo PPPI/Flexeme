@@ -14,13 +14,11 @@ Run Flexeme on the synthetic benchmark.
 1. Cloning subjects: `./subjects/clone_subjects.sh`. Outputs results in 
    `out/<repository>/<repository>_history_filtered_flat.json`.
 2. Creating synthetic commits `./synthetize_commits.sh`
-3. Generate ∂PDGs for each file and each synthetic commit: `python3 
-   tangle_concerns/generate_corpus.py 
-   out/jfreechart/jfreechart_history_filtered_flat.json  subjects/jfreechart .antlr-tmp 1 12 
-   extractors/codechanges-checker-0.1-all.jar
-`
+3. Generate ∂PDGs for each file and each synthetic commit: `python3 flexeme/tangle_concerns/generate_corpus.py 
+   out/storm/storm_history_filtered_flat.json subjects/storm/ .tmp/storm 1 12 extractors/codechanges-checker-0.1-all.
+   jar`
 4. (Merge files into `merged.dot`)
-5. Clean merged.dot files `python3 tangle_concerns/scan_and_clean_corpora.py basic`
+5. Clean merged.dot files `python3 tangle_concerns/scan_and_clean_corpora.py storm`
    - in: out/corpora_raw/**merged.dot
    - out: data/corpora_clean/**
 6. Evaluate `python ./Util/graph_evaluation_driver.py 1 wl 1 repo1 repo2 repo3 ... repoN`

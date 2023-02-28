@@ -20,7 +20,7 @@ def obj_dict_to_networkx(obj_dict):
 
     for node, data in list(obj_dict['nodes'].items()):
         if node != 'graph' and 'span' in data[0]['attributes'].keys():
-            attr = {k: v[1:-1] if v[0] == v[-1] == '"' else v for k, v in data[0]['attributes'].items()}
+            attr = {k: v[1:-1] if v and v[0] == v[-1] == '"' else v for k, v in data[0]['attributes'].items()}
             graph.add_node(node, **attr)
 
     for edge, data in list(obj_dict['edges'].items()):

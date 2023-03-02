@@ -52,7 +52,7 @@ class PDG_Generator(object):
                                                'org.checkerframework.flexeme.PdgExtractor',
                                                 filename, self.sourcepath, self.classpath],
                                               cwd=self.repository_location)
-            generate_a_pdg.wait()
+            generate_a_pdg.wait(timeout=300)
         else:
             print("Platform not supported")
 

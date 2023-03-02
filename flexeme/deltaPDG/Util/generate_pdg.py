@@ -55,7 +55,11 @@ class PDG_Generator(object):
                                                    'org.checkerframework.flexeme.PdgExtractor',
                                                     filename, self.sourcepath, self.classpath],
                                                   cwd=self.repository_location)
-                generate_a_pdg.wait(timeout=300)
+                try:
+                    generate_a_pdg.wait(timeout=300)
+                except subprocess.TimeoutExpired as e:
+                    logging.warning(f"PDG Generation timed out for {filename}")
+                    raise e
             else:
                 logging.error("Platform not supported")
 

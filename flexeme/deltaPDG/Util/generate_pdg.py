@@ -33,35 +33,41 @@ class PDG_Generator(object):
         self.java_exec = os.getenv('FLEXEME_JAVA', "java")
         self.sourcepath = sourcepath
         self.classpath = classpath
+        self.EXTRACTOR_OUTPUT_FILE = "pdg.dot" # Name of the file outputted by the generator.
 
     def __call__(self, filename):
         generate_a_pdg = None
-        if platform == "linux" or platform == "linux2":  # linux
-            generate_a_pdg = subprocess.Popen([self.location, '.', '.' + filename.replace('/', '\\')],
-                                              bufsize=1, cwd=self.repository_location)
-            generate_a_pdg.wait()
-        elif platform == "win32": # Windows
 
-            generate_a_pdg = subprocess.Popen([self.location, '.', '.' + filename.replace('/', '\\')], bufsize=1,
-                                              cwd=self.repository_location)
-            generate_a_pdg.wait()
+        if os.path.exists(os.path.join(self.repository_location, filename)):
+            if platform == "linux" or platform == "linux2":  # linux
+                generate_a_pdg = subprocess.Popen([self.location, '.', '.' + filename.replace('/', '\\')],
+                                                  bufsize=1, cwd=self.repository_location)
+                generate_a_pdg.wait()
+            elif platform == "win32": # Windows
 
-        elif platform == "darwin": # MacOS
-            generator_path = self.location.resolve()
-            generate_a_pdg = subprocess.Popen([self.java_exec, '-cp', generator_path,
-                                               'org.checkerframework.flexeme.PdgExtractor',
-                                                filename, self.sourcepath, self.classpath],
-                                              cwd=self.repository_location)
-            generate_a_pdg.wait(timeout=300)
+                generate_a_pdg = subprocess.Popen([self.location, '.', '.' + filename.replace('/', '\\')], bufsize=1,
+                                                  cwd=self.repository_location)
+                generate_a_pdg.wait()
+
+            elif platform == "darwin": # MacOS
+                generator_path = self.location.resolve()
+                generate_a_pdg = subprocess.Popen([self.java_exec, '-cp', generator_path,
+                                                   'org.checkerframework.flexeme.PdgExtractor',
+                                                    filename, self.sourcepath, self.classpath],
+                                                  cwd=self.repository_location)
+                generate_a_pdg.wait(timeout=300)
+            else:
+                logging.error("Platform not supported")
+
+            if not generate_a_pdg or generate_a_pdg.returncode:
+                logging.error(f"PDG Generation failed for {filename}")
+                exit(1)
         else:
-            print("Platform not supported")
-
-        if not generate_a_pdg or generate_a_pdg.returncode:
-            logging.error(f"PDG Generation failed for {filename}")
-            exit(1)
+            with open(os.path.join(self.repository_location, self.EXTRACTOR_OUTPUT_FILE), 'w') as f:
+                f.write('digraph "extractedGraph"{\n}\n')
 
         try:
-            shutil.move(os.path.join(self.repository_location, 'pdg.dot'),
+            shutil.move(os.path.join(self.repository_location, self.EXTRACTOR_OUTPUT_FILE),
                         os.path.join(self.target_location, self.target_filename))
         except FileNotFoundError:
             logging.error("Diagram not found for " + filename)

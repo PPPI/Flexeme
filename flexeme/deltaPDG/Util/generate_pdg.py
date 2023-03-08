@@ -38,6 +38,8 @@ class PDG_Generator(object):
     def __call__(self, filename):
         generate_a_pdg = None
 
+        filename = filename.lstrip('/')
+
         if os.path.exists(os.path.join(self.repository_location, filename)):
             if platform == "linux" or platform == "linux2":  # linux
                 generate_a_pdg = subprocess.Popen([self.location, '.', '.' + filename.replace('/', '\\')],

@@ -275,7 +275,7 @@ if __name__ == '__main__':
     temp_loc = sys.argv[3]
     id_ = 1 # int(sys.argv[4])
     n_workers = 1 # int(sys.argv[5])
-    extractor_location = '.extractors/codechanges-checker-0.1-all.jar'
+    extractor_location = 'extractors/codechanges-checker-0.1-all.jar'
 
     os.makedirs(temp_loc, exist_ok=True)
 

@@ -129,10 +129,16 @@ def tangle_by_file(subject, temp_loc):
 
 
 if __name__ == '__main__':
-    repository_name = sys.argv[1]
+    repository_path = sys.argv[1] # Path to the checked out repository
+    temp_root = sys.argv[2] # Path to store temporary folders
+    result_dir = sys.argv[3] # Path to store the result
 
-    os.makedirs("out/%s" % repository_name, exist_ok=True)
-    outfile = 'out/%s/%s_history_filtered_flat.json' % (repository_name, repository_name)
-    history_flat = tangle_by_file('./subjects/%s' % repository_name, ".tmp")
+    os.makedirs(temp_root, exist_ok=True)
+    os.makedirs(result_dir, exist_ok=True)
+
+    history_flat = tangle_by_file(repository_path, temp_root)
+
+    # Save the result
+    outfile = os.path.join(result_dir, os.path.basename(repository_path) + '_history_filtered_flat.json')
     with open(outfile, 'w') as f:
         f.write(json.dumps(history_flat))

@@ -1,13 +1,14 @@
 import json
 import logging
 import os
+import subprocess
 import sys
 from threading import Thread
 from dotenv import load_dotenv
 
 import jsonpickle
 import networkx as nx
-
+from typing import List
 
 from flexeme.deltaPDG.Util.generate_pdg import PDG_Generator
 from flexeme.deltaPDG.Util.git_util import Git_Util
@@ -144,7 +145,41 @@ def generate_pdg(revision, repository_path, id_, temp_loc, extractor_location, s
                 raise e
 
 
-def worker(work, subject_location, id_, temp_loc, extractor_location):
+class ProjectLayout:
+
+    def __init__(self, layout_changes: List[tuple], repository_path: str, classpath):
+        """
+        :param layout_changes: List of tuples (commit, src, test) ordered from newest to oldest.
+        """
+        self.classpath = classpath
+        self.layout_changes = layout_changes
+        self.repository_path = repository_path
+
+    def get_sourcepath(self, commit):
+        for id, src, test in self.layout_changes:
+            if self.is_ancestor(id, commit):
+                return f"{src}:{test}"
+        logging.warning("No sourcepath found for commit %s" % commit)
+        return None
+
+    def is_ancestor(self, possible_ancestor, commit):
+        """
+        Check if `id` is an ancestor of `commit`.
+        """
+        process = subprocess.run(['git', 'merge-base', '--is-ancestor', possible_ancestor, commit],
+                                 cwd=self.repository_path)
+        if process.returncode == 0:
+            return True
+        elif process.returncode == 1:
+            return False
+        else:
+            raise Exception("git merge-base --is-ancestor failed")
+
+    def get_classpath(self, commit):
+        return classpath
+
+
+def worker(work, subject_location, id_, temp_loc, extractor_location, layout: ProjectLayout):
     logger = logging.getLogger("worker" + str(id_))
     logger.info("Starting worker" + str(id_))
     repository_name = os.path.basename(subject_location)
@@ -207,13 +242,19 @@ def worker(work, subject_location, id_, temp_loc, extractor_location):
                     try:
                         output_path = './out/corpora_raw/%s/%s_%s/%d/%s.dot' % (
                             repository_name, from_, to_, i, os.path.basename(filename))
-                        # try:
-                        #     with open(output_path) as f:
-                        #         print('Skipping %s as it exits' % output_path)
-                        #         f.read()
-                        # except FileNotFoundError:
+
+                        sourcepath = layout.get_sourcepath(from_ + '^')
+                        classpath = layout.get_classpath(from_ + '^')
+                        v1_pdg_generator.set_sourcepath(sourcepath)
+                        v1_pdg_generator.set_classpath(classpath)
                         v1_pdg_generator(filename)
+
+                        sourcepath = layout.get_sourcepath(to_)
+                        classpath = layout.get_classpath(to_)
+                        v2_pdg_generator.set_sourcepath(sourcepath)
+                        v2_pdg_generator.set_classpath(classpath)
                         v2_pdg_generator(filename)
+
                         delta_gen = deltaPDG(temp_dir_worker + '/before_pdg.dot', m_fuzziness=method_fuzziness,
                                              n_fuzziness=node_fuzziness)
                         delta_pdg = delta_gen(temp_dir_worker + '/after_pdg.dot',
@@ -224,19 +265,17 @@ def worker(work, subject_location, id_, temp_loc, extractor_location):
                     except Exception as e:
                         raise e
 
-
 if __name__ == '__main__':
-    if len(sys.argv) != 7:
+    if len(sys.argv) != 4:
         print('To use this script please run as `[python] generate_corpus.py '
-              '<json file location> <git location> <temp location> '
-              '<thread id start> <number of threads> <extractor location>')
+              '<synthetic commits file> <repository path> <work directory>')
         exit(1)
     json_location = sys.argv[1]
     subject_location = sys.argv[2]
     temp_loc = sys.argv[3]
-    id_ = int(sys.argv[4])
-    n_workers = int(sys.argv[5])
-    extractor_location = sys.argv[6]
+    id_ = 1 # int(sys.argv[4])
+    n_workers = 1 # int(sys.argv[5])
+    extractor_location = '.extractors/codechanges-checker-0.1-all.jar'
 
     os.makedirs(temp_loc, exist_ok=True)
 
@@ -253,9 +292,19 @@ if __name__ == '__main__':
     chunck_size = int(len(list_to_tangle) / n_workers)
     list_to_tangle = [list_to_tangle[i:i + chunck_size] for i in range(0, len(list_to_tangle), chunck_size)]
 
+    # TODO: Get automatically
+    lang = [
+        ('51b0768fc219e8b0d06ada3b4802a136a1322a21', 'src/main/java', 'src/test/java'),
+        ('36719568529d0200e9b273179ca655e24fe04054', 'src/java', 'src/test')]
+
+    # TODO: Get automatically
+    classpath = 'target/classes:target/tests:/Users/thomas/Workplace/defects4j/framework/projects/lib/junit-4.11.jar' \
+                ':/Users/thomas/Workplace/defects4j/framework/projects/Lang/lib/cglib.jar:/Users/thomas/Workplace/defects4j/framework/projects/Lang/lib/asm.jar:/Users/thomas/Workplace/defects4j/framework/projects/Lang/lib/easymock.jar:/Users/thomas/Workplace/defects4j/framework/projects/Lang/lib/commons-io.jar'
+    layout = ProjectLayout(lang, subject_location, classpath)
+
     threads = []
     for work in list_to_tangle:
-        t = Thread(target=worker, args=(work, subject_location, id_, temp_loc, extractor_location))
+        t = Thread(target=worker, args=(work, subject_location, id_, temp_loc, extractor_location, layout))
         id_ += 1
         threads.append(t)
         t.start()

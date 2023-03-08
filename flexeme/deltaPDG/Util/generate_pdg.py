@@ -103,3 +103,9 @@ class PDG_Generator(object):
         except FileNotFoundError:
             # No file, nothing to add
             pass
+
+    def set_sourcepath(self, sourcepath):
+        self.sourcepath = sourcepath
+
+    def set_classpath(self, classpath):
+        self.classpath = classpath

@@ -8,6 +8,17 @@ from flexeme.Util.general_util import get_pattern_paths
 from flexeme.deltaPDG.Util.pygraph_util import read_graph_from_dot, obj_dict_to_networkx, get_context_from_nxgraph
 
 
+def merge_files_pdg(path_to_commit):
+    """
+    Given a directory containing dot file per java file, merges them into a single dot file.
+    """
+    paths = get_pattern_paths('*.java.dot', path_to_commit)
+    merged = merge_deltas_for_a_commit(paths)
+    merged_path = os.path.join(path_to_commit, 'merged.dot')
+    nx.drawing.nx_pydot.write_dot(merged, merged_path)
+    return merged_path
+
+
 def find_entry_and_exit(context, graph):
     # This works under an assumption of entry and exit uniqueness
     # See the change in marking nodes to ensure this: Not marking Entry and Exit nodes

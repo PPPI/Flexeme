@@ -33,19 +33,11 @@ Steps:
 1. Checkout Defects4J repository `git clone $D4J_HOME/project_repos/commons-lang.git 
    /private/tmp/commons-lang`.
 2. Creating synthetic commits `python3 flexeme/tangle_concerns/tangle_by_file.py /private/tmp/commons-lang 
-   /private/tmp/ .`
-3. Generate ∂PDGs for each file and each synthetic commit: `python3 flexeme/tangle_concerns/generate_corpus.py 
-   out/storm/storm_history_filtered_flat.json subjects/storm/ .tmp/storm`
-   - 
-4. (Merge files into `merged.dot`)
-5. Clean merged.dot files `python3 tangle_concerns/scan_and_clean_corpora.py storm`
-   - in: out/corpora_raw/**merged.dot
-   - out: data/corpora_clean/**
-6. Evaluate `python ./Util/graph_evaluation_driver.py 1 wl 1 repo1 repo2 repo3 ... repoN`
-    - `1`: Number of times to run the clustering (for measuring performance)
-    - `wl`: Graph clustering method to use.
-    - `1`: Number of hops.
-    - `repo1 repo2 repo3 ... repoN`: List of subjects to evaluate.
+   /private/tmp/ .`.
+3. Generate ∂PDGs and evaluate: `python3 
+   flexeme/tangle_concerns/generate_corpus.py 
+   out/storm/storm_history_filtered_flat.json subjects/storm/ .tmp/storm`.
+4. Results are saved in `out/commons-lang/`. 
 
 ### Layout changes
 The file `defects4j/layout_changes.json` contains the changes in repository layouts for sourcepath for Defects4J 

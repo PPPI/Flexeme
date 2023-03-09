@@ -8,11 +8,14 @@ from dotenv import load_dotenv
 import jsonpickle
 import networkx as nx
 
+from flexeme.deltaPDG.Util.merge_deltaPDGs import merge_files_pdg
 from flexeme.deltaPDG.Util.generate_pdg import PDG_Generator
 from flexeme.deltaPDG.Util.git_util import Git_Util
 from flexeme.deltaPDG.deltaPDG import deltaPDG
 from flexeme.tangle_concerns.tangle_by_file import tangle_by_file
 from flexeme.synthetic.project_layout import ProjectLayout
+from flexeme.tangle_concerns.scan_and_clean_corpora import clean_graph
+from flexeme.wl_kernel.wl_kernel_untangle import validate
 
 logging.basicConfig(level=logging.DEBUG,
                     format='[%(asctime)s][%(name)s] %(levelname)s: %(message)s',
@@ -189,6 +192,7 @@ def worker(work, subject_location, id_, temp_loc, extractor_location, layout: Pr
             labeli_changes[0] = gh.process_diff_between_commits(from_ + '^', from_, v2)
             previous_sha = from_
             i = 1
+
             for to_ in chain[1:]:
                 gh.cherry_pick_on_top(to_, v2)
 
@@ -201,6 +205,8 @@ def worker(work, subject_location, id_, temp_loc, extractor_location, layout: Pr
                 logger.info(f"{len(files_touched)} files affected between {from_ + '^'} and {to_}")
                 # There will always be a monotonic number of files because the diff is always compared against the
                 # first commit of the chain (from_^).
+
+                out_dir = './out/corpora_raw/%s/%s_%s/%d' % (repository_name, from_, to_, i)
 
                 for filename in files_touched:
                     logger.info(f"Generating PDGs for {filename}")
@@ -230,6 +236,11 @@ def worker(work, subject_location, id_, temp_loc, extractor_location, layout: Pr
                         nx.drawing.nx_pydot.write_dot(delta_pdg, output_path)
                     except Exception as e:
                         raise e
+
+                merged_path = merge_files_pdg(out_dir)
+                clean_path = clean_graph(merged_path, repository_name)
+                validate([clean_path], 1, 2, repository_name)
+
 
 if __name__ == '__main__':
     if len(sys.argv) != 4:

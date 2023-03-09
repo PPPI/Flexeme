@@ -47,6 +47,14 @@ Steps:
     - `1`: Number of hops.
     - `repo1 repo2 repo3 ... repoN`: List of subjects to evaluate.
 
+### Layout changes
+The file `defects4j/layout_changes.json` contains the changes in repository layouts for sourcepath for Defects4J 
+projects. The file is necessary for running the synthetic benchmark. The changes are ordered from newest to oldest.
+
+The layout changes are added manually from the `dir_layout.csv` project-specific file stored in the Defects4J 
+repository. The entries in `dir_layout.csv` are ordered either from new to old or from old to new. Before adding a 
+new project in `defects4j/layout_changes.json`, verify which order is used in `dir_layout.csv`.
+
 
 ## Untangle Commits
 Run Flexeme to untangle a commit in a local repository.

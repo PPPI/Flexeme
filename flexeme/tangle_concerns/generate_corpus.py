@@ -14,6 +14,7 @@ from flexeme.deltaPDG.Util.generate_pdg import PDG_Generator
 from flexeme.deltaPDG.Util.git_util import Git_Util
 from flexeme.deltaPDG.deltaPDG import deltaPDG
 from flexeme.tangle_concerns.tangle_by_file import tangle_by_file
+from synthetic.project_layout import ProjectLayout
 
 logging.basicConfig(level=logging.DEBUG,
                     format='[%(asctime)s][%(name)s] %(levelname)s: %(message)s',
@@ -144,41 +145,6 @@ def generate_pdg(revision, repository_path, id_, temp_loc, extractor_location, s
             except Exception as e:
                 raise e
 
-
-class ProjectLayout:
-
-    def __init__(self, layout_changes: List[tuple], repository_path: str, classpath):
-        """
-        :param layout_changes: List of tuples (commit, src, test) ordered from newest to oldest.
-        """
-        self.classpath = classpath
-        self.layout_changes = layout_changes
-        self.repository_path = repository_path
-
-    def get_sourcepath(self, commit):
-        for id, src, test in self.layout_changes:
-            if self.is_ancestor(id, commit):
-                return f"{src}:{test}"
-        logging.warning("No sourcepath found for commit %s" % commit)
-        return None
-
-    def is_ancestor(self, possible_ancestor, commit):
-        """
-        Check if `id` is an ancestor of `commit`.
-        """
-        process = subprocess.run(['git', 'merge-base', '--is-ancestor', possible_ancestor, commit],
-                                 cwd=self.repository_path)
-        if process.returncode == 0:
-            return True
-        elif process.returncode == 1:
-            return False
-        else:
-            raise Exception("git merge-base --is-ancestor failed")
-
-    def get_classpath(self, commit):
-        return classpath
-
-
 def worker(work, subject_location, id_, temp_loc, extractor_location, layout: ProjectLayout):
     logger = logging.getLogger("worker" + str(id_))
     logger.info("Starting worker" + str(id_))
@@ -293,15 +259,19 @@ if __name__ == '__main__':
     list_to_tangle = [list_to_tangle[i:i + chunck_size] for i in range(0, len(list_to_tangle), chunck_size)]
 
     # TODO: Get automatically
-    lang = [
-        ('51b0768fc219e8b0d06ada3b4802a136a1322a21', 'src/main/java', 'src/test/java'),
-        ('36719568529d0200e9b273179ca655e24fe04054', 'src/java', 'src/test')]
+    # Classpath can be local per project folder or global to defects4j folder.
+    classpath = {
+        'Lang': '/Users/thomas/Workplace/defects4j/framework/projects/lib/junit-4.11.jar:/Users/thomas/Workplace/defects4j/framework/projects/Lang/lib/easymock.jar:/Users/thomas/Workplace/defects4j/framework/projects/Lang/lib/commons-io.jar:/Users/thomas/Workplace/defects4j/framework/projects/Lang/lib/cglib.jar:/Users/thomas/Workplace/defects4j/framework/projects/Lang/lib/asm.jar',
+        'Math': '/Users/thomas/Workplace/defects4j/framework/projects/lib/junit-4.11.jar',
+        'Closure': '',
+        'Chart': '',
+        'Time': ''
+    }
 
-    # TODO: Get automatically
-    classpath = 'target/classes:target/tests:/Users/thomas/Workplace/defects4j/framework/projects/lib/junit-4.11.jar' \
-                ':/Users/thomas/Workplace/defects4j/framework/projects/Lang/lib/cglib.jar:/Users/thomas/Workplace/defects4j/framework/projects/Lang/lib/asm.jar:/Users/thomas/Workplace/defects4j/framework/projects/Lang/lib/easymock.jar:/Users/thomas/Workplace/defects4j/framework/projects/Lang/lib/commons-io.jar'
-    layout = ProjectLayout(lang, subject_location, classpath)
+    # target/classes
+    # classpath = get_classpath(subject_location)
 
+    layout = ProjectLayout("Lang", subject_location, classpath)
     threads = []
     for work in list_to_tangle:
         t = Thread(target=worker, args=(work, subject_location, id_, temp_loc, extractor_location, layout))

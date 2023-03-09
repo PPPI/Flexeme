@@ -1,20 +1,18 @@
 import json
 import logging
 import os
-import subprocess
 import sys
 from threading import Thread
 from dotenv import load_dotenv
 
 import jsonpickle
 import networkx as nx
-from typing import List
 
 from flexeme.deltaPDG.Util.generate_pdg import PDG_Generator
 from flexeme.deltaPDG.Util.git_util import Git_Util
 from flexeme.deltaPDG.deltaPDG import deltaPDG
 from flexeme.tangle_concerns.tangle_by_file import tangle_by_file
-from synthetic.project_layout import ProjectLayout
+from flexeme.synthetic.project_layout import ProjectLayout
 
 logging.basicConfig(level=logging.DEBUG,
                     format='[%(asctime)s][%(name)s] %(levelname)s: %(message)s',
@@ -145,6 +143,7 @@ def generate_pdg(revision, repository_path, id_, temp_loc, extractor_location, s
             except Exception as e:
                 raise e
 
+
 def worker(work, subject_location, id_, temp_loc, extractor_location, layout: ProjectLayout):
     logger = logging.getLogger("worker" + str(id_))
     logger.info("Starting worker" + str(id_))
@@ -210,13 +209,14 @@ def worker(work, subject_location, id_, temp_loc, extractor_location, layout: Pr
                             repository_name, from_, to_, i, os.path.basename(filename))
 
                         sourcepath = layout.get_sourcepath(from_ + '^')
-                        classpath = layout.get_classpath(from_ + '^')
+                        classpath = layout.get_classpath(v1)
+
                         v1_pdg_generator.set_sourcepath(sourcepath)
                         v1_pdg_generator.set_classpath(classpath)
                         v1_pdg_generator(filename)
 
                         sourcepath = layout.get_sourcepath(to_)
-                        classpath = layout.get_classpath(to_)
+                        classpath = layout.get_classpath(v2)
                         v2_pdg_generator.set_sourcepath(sourcepath)
                         v2_pdg_generator.set_classpath(classpath)
                         v2_pdg_generator(filename)
@@ -258,20 +258,7 @@ if __name__ == '__main__':
     chunck_size = int(len(list_to_tangle) / n_workers)
     list_to_tangle = [list_to_tangle[i:i + chunck_size] for i in range(0, len(list_to_tangle), chunck_size)]
 
-    # TODO: Get automatically
-    # Classpath can be local per project folder or global to defects4j folder.
-    classpath = {
-        'Lang': '/Users/thomas/Workplace/defects4j/framework/projects/lib/junit-4.11.jar:/Users/thomas/Workplace/defects4j/framework/projects/Lang/lib/easymock.jar:/Users/thomas/Workplace/defects4j/framework/projects/Lang/lib/commons-io.jar:/Users/thomas/Workplace/defects4j/framework/projects/Lang/lib/cglib.jar:/Users/thomas/Workplace/defects4j/framework/projects/Lang/lib/asm.jar',
-        'Math': '/Users/thomas/Workplace/defects4j/framework/projects/lib/junit-4.11.jar',
-        'Closure': '',
-        'Chart': '',
-        'Time': ''
-    }
-
-    # target/classes
-    # classpath = get_classpath(subject_location)
-
-    layout = ProjectLayout("Lang", subject_location, classpath)
+    layout = ProjectLayout("Lang", subject_location)
     threads = []
     for work in list_to_tangle:
         t = Thread(target=worker, args=(work, subject_location, id_, temp_loc, extractor_location, layout))

@@ -193,54 +193,68 @@ def worker(work, subject_location, id_, temp_loc, extractor_location, layout: Pr
             previous_sha = from_
             i = 1
 
-            for to_ in chain[1:]:
-                gh.cherry_pick_on_top(to_, v2)
+            try:
+                for to_ in chain[1:]:
+                    gh.cherry_pick_on_top(to_, v2)
 
-                changes = gh.process_diff_between_commits(from_ + '^', to_, v2)
-                labeli_changes[i] = gh.process_diff_between_commits(previous_sha, to_, v2)
-                i += 1
-                previous_sha = to_
-                files_touched = {filename for _, filename, _, _, _ in changes if
-                                 os.path.basename(filename).split('.')[-1] == 'java'} # and not filename.endswith("Tests.java")
-                logger.info(f"{len(files_touched)} files affected between {from_ + '^'} and {to_}")
-                # There will always be a monotonic number of files because the diff is always compared against the
-                # first commit of the chain (from_^).
+                    changes = gh.process_diff_between_commits(from_ + '^', to_, v2)
+                    labeli_changes[i] = gh.process_diff_between_commits(previous_sha, to_, v2)
 
-                out_dir = './out/corpora_raw/%s/%s_%s/%d' % (repository_name, from_, to_, i)
+                    i += 1
+                    previous_sha = to_
 
-                for filename in files_touched:
-                    logger.info(f"Generating PDGs for {filename}")
+                    # There will always be a monotonic number of files because the diff is always compared against the
+                    # first commit of the chain (from_^).
+                    files_touched = {filename for _, filename, _, _, _ in changes if
+                                     os.path.basename(filename).split('.')[-1] == 'java'} #and not filename.endswith(
+                    # "Test.java")}
+
+                    if len(files_touched) >= 3:
+                        # Ignore big changes
+                        continue
+
+                    logger.info(f"{len(files_touched)} files affected between {from_ + '^'} and {to_}")
+                    out_dir = './out/corpora_raw/%s/%s_%s/%d' % (repository_name, from_, to_, i)
+
                     try:
-                        output_path = './out/corpora_raw/%s/%s_%s/%d/%s.dot' % (
-                            repository_name, from_, to_, i, os.path.basename(filename))
+                        for filename in files_touched:
+                            logger.info(f"Generating PDGs for {filename}")
+                            try:
+                                output_path = './out/corpora_raw/%s/%s_%s/%d/%s.dot' % (
+                                    repository_name, from_, to_, i, os.path.basename(filename))
 
-                        sourcepath = layout.get_sourcepath(from_ + '^')
-                        classpath = layout.get_classpath(v1)
+                                sourcepath = layout.get_sourcepath(from_ + '^')
+                                classpath = layout.get_classpath(v1)
 
-                        v1_pdg_generator.set_sourcepath(sourcepath)
-                        v1_pdg_generator.set_classpath(classpath)
-                        v1_pdg_generator(filename)
+                                v1_pdg_generator.set_sourcepath(sourcepath)
+                                v1_pdg_generator.set_classpath(classpath)
+                                v1_pdg_generator(filename)
 
-                        sourcepath = layout.get_sourcepath(to_)
-                        classpath = layout.get_classpath(v2)
-                        v2_pdg_generator.set_sourcepath(sourcepath)
-                        v2_pdg_generator.set_classpath(classpath)
-                        v2_pdg_generator(filename)
+                                sourcepath = layout.get_sourcepath(to_)
+                                classpath = layout.get_classpath(v2)
+                                v2_pdg_generator.set_sourcepath(sourcepath)
+                                v2_pdg_generator.set_classpath(classpath)
+                                v2_pdg_generator(filename)
 
-                        delta_gen = deltaPDG(temp_dir_worker + '/before_pdg.dot', m_fuzziness=method_fuzziness,
-                                             n_fuzziness=node_fuzziness)
-                        delta_pdg = delta_gen(temp_dir_worker + '/after_pdg.dot',
-                                              [ch for ch in changes if ch[1] == filename])
-                        delta_pdg = mark_originating_commit(delta_pdg, mark_origin(changes, labeli_changes), filename)
-                        os.makedirs(os.path.dirname(output_path), exist_ok=True)
-                        nx.drawing.nx_pydot.write_dot(delta_pdg, output_path)
+                                delta_gen = deltaPDG(temp_dir_worker + '/before_pdg.dot', m_fuzziness=method_fuzziness,
+                                                     n_fuzziness=node_fuzziness)
+                                delta_pdg = delta_gen(temp_dir_worker + '/after_pdg.dot',
+                                                      [ch for ch in changes if ch[1] == filename])
+                                delta_pdg = mark_originating_commit(delta_pdg, mark_origin(changes, labeli_changes), filename)
+                                os.makedirs(os.path.dirname(output_path), exist_ok=True)
+                                nx.drawing.nx_pydot.write_dot(delta_pdg, output_path)
+                            except Exception as e:
+                                raise e
+
+                        merged_path = merge_files_pdg(out_dir)
+                        clean_path = clean_graph(merged_path, repository_name)
+                        validate([clean_path], 1, 2, repository_name)
                     except Exception as e:
-                        raise e
-
-                merged_path = merge_files_pdg(out_dir)
-                clean_path = clean_graph(merged_path, repository_name)
-                validate([clean_path], 1, 2, repository_name)
-
+                        logging.error("Error while processing synthetic commit %s_%s:" % (from_, to_))
+                        logging.error(e)
+            except Exception as e:
+                logging.error("Error in chain %s:" % str(chain))
+                logging.error(e)
 
 if __name__ == '__main__':
     if len(sys.argv) != 4:

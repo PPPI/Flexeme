@@ -67,7 +67,7 @@ class PDG_Generator(object):
 
             if not generate_a_pdg or generate_a_pdg.returncode:
                 logging.error(f"PDG Generation failed for {filename}")
-                exit(1)
+                raise Exception("PDG Generation failed for " + filename)
         else:
             with open(os.path.join(self.repository_location, self.EXTRACTOR_OUTPUT_FILE), 'w') as f:
                 f.write('digraph "extractedGraph"{\n}\n')

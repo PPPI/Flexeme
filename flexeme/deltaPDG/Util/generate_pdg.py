@@ -53,12 +53,11 @@ class PDG_Generator(object):
 
             elif platform == "darwin": # MacOS
                 generator_path = self.location.resolve()
-                generate_a_pdg = subprocess.Popen([self.java_exec, '-cp', generator_path,
-                                                   'org.checkerframework.flexeme.PdgExtractor',
-                                                    filename, self.sourcepath, self.classpath],
-                                                  cwd=self.repository_location)
                 try:
-                    generate_a_pdg.wait(timeout=300)
+                    generate_a_pdg = subprocess.run(
+                        [self.java_exec, '-cp', generator_path, 'org.checkerframework.flexeme.PdgExtractor',
+                         filename, self.sourcepath, self.classpath],
+                        cwd=self.repository_location, timeout=300)
                 except subprocess.TimeoutExpired as e:
                     logging.warning(f"PDG Generation timed out for {filename}")
                     raise e

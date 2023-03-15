@@ -209,10 +209,6 @@ def worker(work, subject_location, id_, temp_loc, extractor_location, layout: Pr
                                      os.path.basename(filename).split('.')[-1] == 'java'} #and not filename.endswith(
                     # "Test.java")}
 
-                    if len(files_touched) >= 3:
-                        # Ignore big changes
-                        continue
-
                     logger.info(f"{len(files_touched)} files affected between {from_ + '^'} and {to_}")
                     out_dir = './out/corpora_raw/%s/%s_%s/%d' % (repository_name, from_, to_, i)
 

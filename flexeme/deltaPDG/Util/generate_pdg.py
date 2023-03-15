@@ -4,7 +4,6 @@ import shutil
 import subprocess
 import pathlib
 
-from sys import platform
 import logging
 
 import networkx as nx
@@ -41,28 +40,15 @@ class PDG_Generator(object):
         filename = filename.lstrip('/')
 
         if os.path.exists(os.path.join(self.repository_location, filename)):
-            if platform == "linux" or platform == "linux2":  # linux
-                generate_a_pdg = subprocess.Popen([self.location, '.', '.' + filename.replace('/', '\\')],
-                                                  bufsize=1, cwd=self.repository_location)
-                generate_a_pdg.wait()
-            elif platform == "win32": # Windows
-
-                generate_a_pdg = subprocess.Popen([self.location, '.', '.' + filename.replace('/', '\\')], bufsize=1,
-                                                  cwd=self.repository_location)
-                generate_a_pdg.wait()
-
-            elif platform == "darwin": # MacOS
-                generator_path = self.location.resolve()
-                try:
-                    generate_a_pdg = subprocess.run(
-                        [self.java_exec, '-cp', generator_path, 'org.checkerframework.flexeme.PdgExtractor',
-                         filename, self.sourcepath, self.classpath],
-                        cwd=self.repository_location, timeout=300)
-                except subprocess.TimeoutExpired as e:
-                    logging.warning(f"PDG Generation timed out for {filename}")
-                    raise e
-            else:
-                logging.error("Platform not supported")
+            generator_path = self.location.resolve()
+            try:
+                generate_a_pdg = subprocess.run(
+                    [self.java_exec, '-cp', generator_path, 'org.checkerframework.flexeme.PdgExtractor',
+                     filename, self.sourcepath, self.classpath],
+                    cwd=self.repository_location, timeout=300)
+            except subprocess.TimeoutExpired as e:
+                logging.warning(f"PDG Generation timed out for {filename}")
+                raise e
 
             if not generate_a_pdg or generate_a_pdg.returncode:
                 logging.error(f"PDG Generation failed for {filename}")

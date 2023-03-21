@@ -244,7 +244,7 @@ def worker(work, subject_location, id_, temp_loc, extractor_location, layout: Pr
 
                         merged_path = merge_files_pdg(out_dir)
                         clean_path = clean_graph(merged_path, repository_name)
-                        validate([clean_path], 1, 2, repository_name)
+                        validate([clean_path], 1, 1, repository_name) # Flexeme's paper uses 1-hop clustering
                     except Exception as e:
                         logging.error("Error while processing synthetic commit %s_%s:" % (from_, to_))
                         logging.error(e)

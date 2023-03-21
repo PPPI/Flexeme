@@ -6,7 +6,9 @@ Please see [ORIGINAL_INSTRUCTIONS](./ORIGINAL_INSTRUCTIONS.md) document for the 
 Flexeme repository.
 
 ## Requirements
-**Requires python 3.8.**
+- **Requires python 3.8.**
+- Requires Java 8 on the path
+- Requires Java 11 in `FLEXEME_JAVA` environment variable
 
 ## Synthetic Benchmark
 Run Flexeme on the synthetic benchmark.

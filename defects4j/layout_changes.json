@@ -8,5 +8,27 @@
       "commit": "36719568529d0200e9b273179ca655e24fe04054",
       "sourcepath": "src/java:src/test"
     }
+  ],
+  "Math": [
+    {
+      "commit": "72120337219d7d0b5913ac8bf024313471444910",
+      "sourcepath": "src/main/java:src/test/java"
+    },
+    {
+      "commit": "41ba9e00e3bbde990f6821f67f0da2a5575b9ac3",
+      "sourcepath": "src/java:src/test"
+    }
+  ],
+  "Closure": [
+    {
+      "commit": "49f54b28376a4ed5f72ec52d314020bd1f6cf3c6",
+      "sourcepath": "src:test"
+    }
+  ],
+  "Time": [
+    {
+      "commit": "4058d725e2b886e429233aa02bc45c3acf374471",
+      "sourcepath": "src/main/java:src/test/java"
+    }
   ]
 }

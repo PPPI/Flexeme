@@ -45,6 +45,11 @@ Steps:
 The file `defects4j/layout_changes.json` contains the changes in repository layouts for sourcepath for Defects4J 
 projects. The file is necessary for running the synthetic benchmark. The changes are ordered from newest to oldest.
 
+When untangling a commit, the scripts find the correct layout by checking if the newest layout change commit is an 
+ancestor.
+If it is not, it will check the next older layout change commit until it finds an ancestor. If no ancestor is found, 
+a warning is logged and the layout returned is `None`.
+
 The layout changes are added manually from the `dir_layout.csv` project-specific file stored in the Defects4J 
 repository. The entries in `dir_layout.csv` are ordered either from new to old or from old to new. Before adding a 
 new project in `defects4j/layout_changes.json`, verify which order is used in `dir_layout.csv`.

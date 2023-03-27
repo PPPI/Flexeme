@@ -253,6 +253,10 @@ def worker(work, subject_location, id_, temp_loc, extractor_location, layout: Pr
                 logging.error(e)
 
 if __name__ == '__main__':
+    """
+    Run the synthetic benchmark.
+    """
+
     if len(sys.argv) != 4:
         print('To use this script please run as `[python] generate_corpus.py '
               '<synthetic commits file> <repository path> <work directory>')
@@ -267,6 +271,8 @@ if __name__ == '__main__':
     os.makedirs(temp_loc, exist_ok=True)
 
     load_dotenv() # Load .env file
+
+    # Create commit chains if the file doesn't exists.
     try:
         with open(json_location) as f:
             list_to_tangle = jsonpickle.decode(f.read())
@@ -279,7 +285,18 @@ if __name__ == '__main__':
     chunck_size = int(len(list_to_tangle) / n_workers)
     list_to_tangle = [list_to_tangle[i:i + chunck_size] for i in range(0, len(list_to_tangle), chunck_size)]
 
-    layout = ProjectLayout("Lang", subject_location)
+    repository_name_to_d4j_name = {
+        'commons-math': 'Math',
+        'commons-lang': 'Lang',
+        'joda-time': 'Time',
+        'closure-compiler':'Closure'
+    }
+
+    project_name = repository_name_to_d4j_name[os.path.basename(subject_location)]
+
+    logging.info("Looking into " + project_name + " project.")
+
+    layout = ProjectLayout(project_name, subject_location)
     threads = []
     for work in list_to_tangle:
         t = Thread(target=worker, args=(work, subject_location, id_, temp_loc, extractor_location, layout))

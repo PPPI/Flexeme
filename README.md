@@ -38,7 +38,7 @@ Steps:
    /private/tmp/ .`.
 3. Generate ∂PDGs and evaluate: `python3 
    flexeme/tangle_concerns/generate_corpus.py 
-   out/storm/storm_history_filtered_flat.json subjects/storm/ .tmp/storm`.
+   out/storm/storm_history_filtered_flat.json /private/tmp/commons-lang .tmp/storm`.
 4. Results are saved in `out/commons-lang/`. 
 
 ### Layout changes

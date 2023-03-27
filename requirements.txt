@@ -8,3 +8,7 @@ pygraphviz>=1.6
 pydot>=1.4.1
 grakel>=0.1a6
 nltk>=3.4.4
+
+# Data analysis
+pandas
+seaborn

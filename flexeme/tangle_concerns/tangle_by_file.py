@@ -139,6 +139,7 @@ if __name__ == '__main__':
     history_flat = tangle_by_file(repository_path, temp_root)
 
     # Save the result
-    outfile = os.path.join(result_dir, os.path.basename(repository_path) + '_history_filtered_flat.json')
+    outfile = os.path.join(result_dir, os.path.basename(repository_path.rstrip('/').rstrip('.git')) +
+                           '_history_filtered_flat.json')
     with open(outfile, 'w') as f:
         f.write(json.dumps(history_flat))

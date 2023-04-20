@@ -57,11 +57,11 @@ class ProjectLayout:
         return data
 
     def get_sourcepath(self, commit):
-        for change in self.layout_changes[self.d4j_project_name]:
+        project = self.layout_changes[self.d4j_project_name]
+        for change in project['changes']:
             if self.is_ancestor(change['commit'], commit):
                 return change['sourcepath']
-        logging.warning("No sourcepath found for commit %s" % commit)
-        return None
+        return project['sourcepath-fallback']
 
     def is_ancestor(self, possible_ancestor, commit):
         """

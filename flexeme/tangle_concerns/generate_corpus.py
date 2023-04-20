@@ -26,6 +26,7 @@ logging.getLogger("git.cmd").setLevel(logging.INFO)
 
 load_dotenv()  # Load .env file
 
+
 def mark_originating_commit(dpdg, marked_diff, filename):
     dpdg = dpdg.copy()
 
@@ -119,10 +120,10 @@ def generate_pdg(revision, repository_path, id_, temp_loc, extractor_location, s
         labeli_changes[0] = gh.process_diff_between_commits(from_, to_, v2)
         changes = gh.process_diff_between_commits(from_, to_, v2)
         files_touched = {filename for _, filename, _, _, _ in changes if
-                             os.path.basename(filename).split('.')[-1] == 'java'} # and not filename.endswith("Tests.java")
+                         os.path.basename(filename).split('.')[-1] == 'java'}  # and not filename.endswith("Tests.java")
 
         for filename in sorted(files_touched):
-            local_filename = os.path.normpath(filename.lstrip('/')) # filename is local to the repository. It
+            local_filename = os.path.normpath(filename.lstrip('/'))  # filename is local to the repository. It
             # shouldn't start with a '/'
             # we keep filename as is otherwise it breaks the comparison in the diff in mark_originating_commit()
             logging.info(f"Generating PDGs for {filename}")
@@ -206,7 +207,7 @@ def worker(work, subject_location, id_, temp_loc, extractor_location, layout: Pr
                     # There will always be a monotonic number of files because the diff is always compared against the
                     # first commit of the chain (from_^).
                     files_touched = {filename for _, filename, _, _, _ in changes if
-                                     os.path.basename(filename).split('.')[-1] == 'java'} #and not filename.endswith(
+                                     os.path.basename(filename).split('.')[-1] == 'java'}  # and not filename.endswith(
                     # "Test.java")}
 
                     logger.info(f"{len(files_touched)} files affected between {from_ + '^'} and {to_}")
@@ -236,7 +237,8 @@ def worker(work, subject_location, id_, temp_loc, extractor_location, layout: Pr
                                                      n_fuzziness=node_fuzziness)
                                 delta_pdg = delta_gen(temp_dir_worker + '/after_pdg.dot',
                                                       [ch for ch in changes if ch[1] == filename])
-                                delta_pdg = mark_originating_commit(delta_pdg, mark_origin(changes, labeli_changes), filename)
+                                delta_pdg = mark_originating_commit(delta_pdg, mark_origin(changes, labeli_changes),
+                                                                    filename)
                                 os.makedirs(os.path.dirname(output_path), exist_ok=True)
                                 nx.drawing.nx_pydot.write_dot(delta_pdg, output_path)
                             except Exception as e:
@@ -244,13 +246,14 @@ def worker(work, subject_location, id_, temp_loc, extractor_location, layout: Pr
 
                         merged_path = merge_files_pdg(out_dir)
                         clean_path = clean_graph(merged_path, repository_name)
-                        validate([clean_path], 1, 1, repository_name) # Flexeme's paper uses 1-hop clustering
+                        validate([clean_path], 1, 1, repository_name)  # Flexeme's paper uses 1-hop clustering
                     except Exception as e:
                         logging.error("Error while processing synthetic commit %s_%s:" % (from_, to_))
                         logging.error(e)
             except Exception as e:
                 logging.error("Error in chain %s:" % str(chain))
                 logging.error(e)
+
 
 if __name__ == '__main__':
     """
@@ -262,15 +265,18 @@ if __name__ == '__main__':
               '<synthetic commits file> <repository path> <work directory>')
         exit(1)
     json_location = sys.argv[1]
-    subject_location = sys.argv[2]
-    temp_loc = sys.argv[3]
-    id_ = 1 # int(sys.argv[4])
-    n_workers = 1 # int(sys.argv[5])
+    subject_location = os.path.abspath(sys.argv[2])
+    temp_loc = os.path.abspath(sys.argv[3])
+    id_ = 1  # int(sys.argv[4])
+    n_workers = 1  # int(sys.argv[5])
     extractor_location = 'extractors/codechanges-checker-0.1-all.jar'
+
+    if not os.path.exists(subject_location):
+        print(f"Subject location {subject_location} does not exists")
 
     os.makedirs(temp_loc, exist_ok=True)
 
-    load_dotenv() # Load .env file
+    load_dotenv()  # Load .env file
 
     # Create commit chains if the file doesn't exists.
     try:
@@ -289,7 +295,7 @@ if __name__ == '__main__':
         'commons-math': 'Math',
         'commons-lang': 'Lang',
         'joda-time': 'Time',
-        'closure-compiler':'Closure'
+        'closure-compiler': 'Closure'
     }
 
     project_name = repository_name_to_d4j_name[os.path.basename(subject_location)]

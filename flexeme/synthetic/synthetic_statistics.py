@@ -63,7 +63,7 @@ def main(synthetic_chains, subject_location):
             labeli_changes[0] = gh.process_diff_between_commits(from_ + '^', from_, v2)
 
             edits = dict()
-            for file in [filename for _, filename, _, _, _ in labeli_changes[0]]:
+            for file in [filename for _, filename, _, _, _ in labeli_changes[0] if os.path.basename(filename).split('.')[-1] == 'java']:
                 if edits.get(file) is None:
                     edits[file] = set()
                 edits[file].add(from_)
@@ -87,9 +87,9 @@ def main(synthetic_chains, subject_location):
                     # only the changes added in to_
                     labeli_changes[i] = gh.process_diff_between_commits(previous_sha, to_, v2)
 
-                    files_touched = {filename for _, filename, _, _, _ in changes}
+                    files_touched = {filename for _, filename, _, _, _ in changes if os.path.basename(filename).split('.')[-1] == 'java'}
 
-                    files_updated_i = {filename for _, filename, _, _, _ in labeli_changes[i]}
+                    files_updated_i = {filename for _, filename, _, _, _ in labeli_changes[i]  if os.path.basename(filename).split('.')[-1] == 'java'}
                     for file in files_updated_i:
                         if edits.get(file) is None:
                             edits[file] = set()
@@ -116,6 +116,7 @@ def main(synthetic_chains, subject_location):
                 previous_sha = to_
 
         logging.info(f'Number of datapoints: {datapoint_counter}')
+
 
 if __name__ == '__main__':
     args = sys.argv[1:]

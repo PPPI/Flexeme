@@ -2,9 +2,12 @@ from typing import List, Tuple
 
 import pygraphviz
 
+LANG_JAVA = 'java'
+LANG_CSHARP = 'csharp'
+
 
 def mark_pdg_nodes(apdg, marker: str,
-                   diff: List[Tuple[str, str, int, int, str]]) -> pygraphviz.AGraph:
+                   diff: List[Tuple[str, str, int, int, str]], lang: str) -> pygraphviz.AGraph:
     marked_pdg = apdg.copy()
     index = 2 if marker == '+' else 3
     change_label = 'green' if marker == '+' else 'red'
@@ -23,7 +26,15 @@ def mark_pdg_nodes(apdg, marker: str,
         except ValueError:
             continue
         # We will use the changed nodes as anchors via neighbours
-        change = any([start <= cln - 1 <= end for cln in c_diff])
+
+        if lang == LANG_CSHARP:
+            offset = 1
+        elif lang == LANG_JAVA:
+            offset = 0
+        else:
+            raise ValueError("Unsupported language: %s" % lang)
+
+        change = any([start <= cln - offset <= end for cln in c_diff])
         # anchor = any([start <= aln - 1 <= end for aln in a_diff])
         if change:
             attr = data

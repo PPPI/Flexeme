@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 import jsonpickle
 import networkx as nx
 
+from deltaPDG.Util.mark_pdgs import LANG_JAVA
 from flexeme.deltaPDG.Util.merge_deltaPDGs import merge_files_pdg
 from flexeme.deltaPDG.Util.generate_pdg import PDG_Generator
 from flexeme.deltaPDG.Util.git_util import Git_Util
@@ -139,7 +140,7 @@ def generate_pdg(revision, repository_path, id_, temp_loc, extractor_location, s
                 delta_gen = deltaPDG(temp_dir_worker + '/before_pdg.dot', m_fuzziness=method_fuzziness,
                                      n_fuzziness=node_fuzziness)
                 delta_pdg = delta_gen(temp_dir_worker + '/after_pdg.dot',
-                                      [ch for ch in changes if ch[1] == filename])
+                                      [ch for ch in changes if ch[1] == filename], LANG_JAVA)
                 delta_pdg = mark_originating_commit(delta_pdg, mark_origin(changes, labeli_changes), filename)
                 os.makedirs(os.path.dirname(output_path), exist_ok=True)
                 nx.set_node_attributes(delta_pdg, local_filename, "filepath")
@@ -236,7 +237,7 @@ def worker(work, subject_location, id_, temp_loc, extractor_location, layout: Pr
                                 delta_gen = deltaPDG(temp_dir_worker + '/before_pdg.dot', m_fuzziness=method_fuzziness,
                                                      n_fuzziness=node_fuzziness)
                                 delta_pdg = delta_gen(temp_dir_worker + '/after_pdg.dot',
-                                                      [ch for ch in changes if ch[1] == filename])
+                                                      [ch for ch in changes if ch[1] == filename], LANG_JAVA)
                                 delta_pdg = mark_originating_commit(delta_pdg, mark_origin(changes, labeli_changes),
                                                                     filename)
                                 os.makedirs(os.path.dirname(output_path), exist_ok=True)

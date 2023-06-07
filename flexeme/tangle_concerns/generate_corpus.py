@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 import jsonpickle
 import networkx as nx
 
-from deltaPDG.Util.mark_pdgs import LANG_JAVA
+from flexeme.deltaPDG.Util.mark_pdgs import LANG_JAVA
 from flexeme.deltaPDG.Util.merge_deltaPDGs import merge_files_pdg
 from flexeme.deltaPDG.Util.generate_pdg import PDG_Generator
 from flexeme.deltaPDG.Util.git_util import Git_Util

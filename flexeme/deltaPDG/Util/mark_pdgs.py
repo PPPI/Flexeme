@@ -12,8 +12,13 @@ def mark_pdg_nodes(apdg, marker: str,
     index = 2 if marker == '+' else 3
     change_label = 'green' if marker == '+' else 'red'
     anchor_label = 'orange'
+
+    # Retrieve the changed line number corresponding to the change marker (+ or -).
     diff_ = [(l[0], l[1], l[index], l[-1]) for l in diff]
+
+    # Only keep changed lines for the current change marker (+ or -)
     c_diff = [ln for m, f, ln, line in diff_ if m == marker]
+
     # a_diff = [ln for m, f, ln, line in diff_ if m == ' ']
     for node, data in marked_pdg.nodes(data=True):
         if data['label'] in ['Entry', 'Exit']:
@@ -22,6 +27,7 @@ def mark_pdg_nodes(apdg, marker: str,
             apdg.add_node(node, **attr)
             continue  # Do not mark entry and exit nodes.
         try:
+            # Retrieve the line numbers from the node label.
             start, end = [int(ln) for ln in data['span'].split('-') if '-' in data['span']]
         except ValueError:
             continue

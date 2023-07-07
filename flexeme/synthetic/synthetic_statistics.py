@@ -122,7 +122,7 @@ if __name__ == '__main__':
     args = sys.argv[1:]
     if len(args) != 2:
         print('usage: `[python] generate_corpus.py <synthetic commits file> <repository path>')
-        exit(1)
+        sys.exit(1)
     json_location = sys.argv[1]
     subject_location = sys.argv[2]
 
@@ -132,6 +132,6 @@ if __name__ == '__main__':
             synthetic_chains = jsonpickle.decode(f.read())
     except FileNotFoundError:
         logging.error(f"File {json_location} not found")
-        exit(1)
+        sys.exit(1)
 
     main(synthetic_chains, subject_location)

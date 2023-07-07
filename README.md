@@ -2,11 +2,11 @@
 
 Java implementation of Flexeme based on the original implementation of Flexeme.
 
-Please see [ORIGINAL_INSTRUCTIONS](./ORIGINAL_INSTRUCTIONS.md) document for the documentation of the original 
+Please see [ORIGINAL_INSTRUCTIONS.md](./ORIGINAL_INSTRUCTIONS.md) document for the documentation of the original 
 Flexeme repository.
 
 ## Requirements
-- **Requires python 3.8.**
+- **Requires Python 3.8.**
 - Requires Java 8 on the path
 - Requires Java 11 in `FLEXEME_JAVA` environment variable
 

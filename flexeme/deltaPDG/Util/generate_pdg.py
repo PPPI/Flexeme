@@ -29,7 +29,7 @@ class PDG_Generator(object):
         self.repository_location = repository_location
         self.target_filename = target_filename
         self.target_location = target_location
-        self.java_exec = os.getenv('JAVA_11', "java")
+        self.java_exec = os.getenv('JAVA11_HOME', "java")
         self.sourcepath = sourcepath
         self.classpath = classpath
         self.EXTRACTOR_OUTPUT_FILE = "pdg.dot" # Name of the file outputted by the generator.

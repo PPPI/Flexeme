@@ -102,9 +102,6 @@ all the valid intervals of commits w.r.t. our tangle criteria. Next, one would r
 
 Java:
 ```
-export FLEXEME_JAVA=java 11 path
-```
-```
  python tangle_concerns/generate_corpus.py out/basic.json subjects/basic .tmp 1 1 /Users/thomas/Workplace/Flexeme/extractors/codechanges-checker-all.jar
 ```
 

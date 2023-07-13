@@ -8,7 +8,7 @@ Flexeme repository.
 ## Requirements
 - **Requires Python 3.8.**
 - Requires Java 8 on the path
-- Requires Java 11 in `FLEXEME_JAVA` environment variable
+- Requires Java 11 in `JAVA11_HOME` environment variable
 
 ## Installation
 1. Install Graphviz https://graphviz.org/.

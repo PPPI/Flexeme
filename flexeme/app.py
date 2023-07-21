@@ -12,7 +12,7 @@ from flexeme.wl_kernel.wl_kernel_untangle import validate
 def untangle(repository_path, revision, sourcepath, classpath, out_file):
     temp_path = '.tmp'
     id = 0
-    extractor_path = 'extractors/codechanges-checker-0.1-all.jar'
+    extractor_path = 'extractors/codechanges-checker-0.1.2-all.jar'
 
     repository_path = os.path.abspath(os.path.normpath(repository_path))
     corpus_name = os.path.basename(repository_path)

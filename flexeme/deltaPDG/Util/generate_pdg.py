@@ -29,7 +29,7 @@ class PDG_Generator(object):
         self.repository_location = repository_location
         self.target_filename = target_filename
         self.target_location = target_location
-        self.java_exec = os.getenv('JAVA_11', "java")
+        self.java_executable = os.getenv('JAVA11_HOME', "JAVA_HOME") + '/bin/java'
         self.sourcepath = sourcepath
         self.classpath = classpath
         self.EXTRACTOR_OUTPUT_FILE = "pdg.dot" # Name of the file outputted by the generator.
@@ -43,7 +43,7 @@ class PDG_Generator(object):
             generator_path = self.location.resolve()
             try:
                 generate_a_pdg = subprocess.run(
-                    [self.java_exec, '-cp', generator_path, 'org.checkerframework.flexeme.PdgExtractor',
+                    [self.java_executable, '-cp', generator_path, 'org.checkerframework.flexeme.PdgExtractor',
                      filename, self.sourcepath, self.classpath],
                     cwd=self.repository_location, timeout=300)
             except subprocess.TimeoutExpired as e:

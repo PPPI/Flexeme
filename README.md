@@ -16,8 +16,9 @@ Flexeme repository.
 3. Activate the virtual environment `source .venv/bin/activate`.
 4. Install Flexeme `pip install -e .`
    - If the dependency `pygraphviz` fails to install. Visit https://pygraphviz.github.io/documentation/stable/install.html and follow the instructions for your OS.
-5. Run `cp .env-template .env` and fill in the environment variables in `.env`:
-    - `JAVA11_HOME`: Location of the **Java 11** executable to run the PDG extractor. Requires Java 11. (e.g., `"$HOME/.sdkman/candidates/java/11.0.18-amzn/bin/java`")
+5. Do one of the following two:
+    * Ensure that the `JAVA11_HOME` environment variable is set.
+    * Run `cp .env-template .env` and fill in the environment variable in `.env`.
 
 ## Synthetic Benchmark
 Run Flexeme on the synthetic benchmark.

@@ -17,17 +17,17 @@ def slice_delta(graph):
             visited.append(node)
             to_add.append(node)
             try:
-                if graph.node[node]['label'] != 'Entry %s' % context[node] \
-                        and graph.node[node]['label'] != 'Exit %s' % context[node]:
+                if graph.nodes[node]['label'] != 'Entry %s' % context[node] \
+                        and graph.nodes[node]['label'] != 'Exit %s' % context[node]:
                     for neighbour in list(graph.successors(node)) + list(graph.predecessors(node)):
                         if context[neighbour] == context[node]:
                             to_visit.append(neighbour)
             except KeyError:
                 pass
 
-    for node in sorted(sorted(to_add, key=lambda x: 'Entry' in graph.node[x]['label'], reverse=True),
-                       key=lambda x: 'Exit' in graph.node[x]['label']):
-        output.add_node(node, **graph.node[node])
+    for node in sorted(sorted(to_add, key=lambda x: 'Entry' in graph.nodes[x]['label'], reverse=True),
+                       key=lambda x: 'Exit' in graph.nodes[x]['label']):
+        output.add_node(node, **graph.nodes[node])
 
     for edge in graph.edges(keys=True):
         source, target, key = edge

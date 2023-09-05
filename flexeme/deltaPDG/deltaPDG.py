@@ -23,3 +23,14 @@ class deltaPDG(object):
         pdg_integers = nx.convert_node_labels_to_integers(pdg)
         pdg_reset = nx.relabel_nodes(pdg_integers, lambda n: 'n' + str(n))
         return pdg_reset
+
+
+def quote_label(pdg: nx.Graph):
+    """
+    Quotes the label of the nodes in the pdg to avoid issue https://github.com/pydot/pydot/issues/258.
+    """
+    pdg = pdg.copy()
+    for node in pdg.nodes:
+        label_value = pdg.nodes[node]['label']
+        pdg.nodes[node]['label'] = f'"{label_value}"'
+    return pdg

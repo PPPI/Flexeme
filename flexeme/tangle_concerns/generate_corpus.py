@@ -12,7 +12,7 @@ from flexeme.deltaPDG.Util.mark_pdgs import LANG_JAVA
 from flexeme.deltaPDG.Util.merge_deltaPDGs import merge_files_pdg
 from flexeme.deltaPDG.Util.generate_pdg import PDG_Generator
 from flexeme.deltaPDG.Util.git_util import Git_Util
-from flexeme.deltaPDG.deltaPDG import deltaPDG
+from flexeme.deltaPDG.deltaPDG import deltaPDG, quote_label
 from flexeme.tangle_concerns.tangle_by_file import tangle_by_file
 from flexeme.synthetic.project_layout import ProjectLayout
 from flexeme.tangle_concerns.scan_and_clean_corpora import clean_graph
@@ -58,7 +58,7 @@ def mark_originating_commit(dpdg, marked_diff, filename):
                              if label in line and (start <= after_coord <= end or start <= before_coord <= end)],
                             default=0)
 
-            dpdg.node[node]['community'] = community
+            dpdg.nodes[node]['community'] = community
 
     return dpdg
 
@@ -241,7 +241,7 @@ def worker(work, subject_location, id_, temp_loc, extractor_location, layout: Pr
                                 delta_pdg = mark_originating_commit(delta_pdg, mark_origin(changes, labeli_changes),
                                                                     filename)
                                 os.makedirs(os.path.dirname(output_path), exist_ok=True)
-                                nx.drawing.nx_pydot.write_dot(delta_pdg, output_path)
+                                nx.drawing.nx_pydot.write_dot(quote_label(delta_pdg), output_path)
                             except Exception as e:
                                 raise e
                         if len(files_touched) != 0:
@@ -250,10 +250,10 @@ def worker(work, subject_location, id_, temp_loc, extractor_location, layout: Pr
                             validate([clean_path], 1, 1, repository_name)  # Flexeme's paper uses 1-hop clustering
                     except Exception as e:
                         logging.error("Error while processing synthetic commit %s_%s:" % (from_, to_))
-                        logging.error(e)
+                        logging.exception(e)
             except Exception as e:
                 logging.error("Error in chain %s:" % str(chain))
-                logging.error(e)
+                logging.exception(e)
 
 
 if __name__ == '__main__':

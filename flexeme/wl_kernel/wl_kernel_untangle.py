@@ -17,6 +17,7 @@ from nltk.stem import PorterStemmer
 from sklearn.cluster import AgglomerativeClustering
 from tqdm import tqdm
 
+from flexeme.deltaPDG.deltaPDG import quote_label
 from flexeme.Util.evaluation import evaluate
 from flexeme.confidence_voters.confidence_voters import remove_all_except
 from flexeme.deltaPDG.Util.pygraph_util import obj_dict_to_networkx, read_graph_from_dot
@@ -142,17 +143,17 @@ def validate(files: List[str], times, k_hop, repository_name, edges_kept="all",
                         i = seeds.index(node) if node in seeds else -1
 
                         if labels is not None and i != -1:
-                            data['label'] = '%d: ' % labels[i] + data['label']
+                            data['label'] = '"%d: %s"' % (labels[i], data['label'])
                             label.append(labels[i])
                             graph.add_node(node, **data)
                         else:
-                            data['label'] = '-1: ' + data['label']
+                            data['label'] = '"-1: %s"' % data['label']
                             label.append(-1)
                             graph.add_node(node, **data)
 
             if out_file is None:
                 out_file = graph_location[:-4] + '_output_wl_%d.dot' % k_hop
-            nx.drawing.nx_pydot.write_dot(graph, out_file)
+            nx.drawing.nx_pydot.write_dot(quote_label(graph), out_file)
 
             truth = np.asarray(truth)
             label = np.asarray(label)

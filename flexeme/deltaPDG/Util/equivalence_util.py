@@ -13,14 +13,14 @@ class Eq_Utils(object):
         return fuzz.ratio(node_label_a, node_label_b, score_cutoff=self.n_fuzziness) > 0
 
     def node_eq(self, graph_a, node_a, graph_b, node_b):
-        if not (self.node_label_eq(graph_a.node[node_a]['label'], graph_b.node[node_b]['label'])):
+        if not (self.node_label_eq(graph_a.nodes[node_a]['label'], graph_b.nodes[node_b]['label'])):
             return False
 
         n_a = [n for n in list(graph_a.successors(node_a)) + list(graph_a.predecessors(node_a)) if
-               'color' not in graph_a.node[n].keys() or graph_a.node[n]['color'] == 'orange']
+               'color' not in graph_a.nodes[n].keys() or graph_a.nodes[n]['color'] == 'orange']
 
         n_b = [n for n in list(graph_b.successors(node_b)) + list(graph_b.predecessors(node_b)) if
-               'color' not in graph_b.node[n].keys() or graph_b.node[n]['color'] == 'orange']
+               'color' not in graph_b.nodes[n].keys() or graph_b.nodes[n]['color'] == 'orange']
 
         # We check for set inclusion, make sure we have the smaller set in the outer loop!
         if len(n_a) > len(n_b):
@@ -32,7 +32,7 @@ class Eq_Utils(object):
             found = False
             for other_node in n_b:
                 try:
-                    if self.node_label_eq(graph_a.node[node]['label'], graph_b.node[other_node]['label']):
+                    if self.node_label_eq(graph_a.nodes[node]['label'], graph_b.nodes[other_node]['label']):
                         found = True
                         break
                 except KeyError:

@@ -39,7 +39,7 @@ class Marked_Merger(object):
         # Stop when list is empty
         # Boot strap list with all marked nodes in v2
         to_visit = [str(node) for node in after_apdg.nodes() if
-                    'color' in after_apdg.node[node].keys() and after_apdg.node[node]['color'] != 'orange']
+                    'color' in after_apdg.nodes[node].keys() and after_apdg.nodes[node]['color'] != 'orange']
         visited = list()
 
         work_to_be_done = len(to_visit) > 0
@@ -52,11 +52,11 @@ class Marked_Merger(object):
             node_id = to_visit[0]
             node_id = node_id.replace('n', 'd') if node_id not in label_map_ba.keys() else label_map_ba[node_id]
             to_visit = to_visit[1:]
-            if not (before_apdg.has_node(node_id) and 'label' in before_apdg.node[node_id].keys()):
+            if not (before_apdg.has_node(node_id) and 'label' in before_apdg.nodes[node_id].keys()):
                 # Find node in after graph and visit if not visited (sanity check)
                 other_node = 'n' + node_id[1:]
                 if other_node not in visited:
-                    before_apdg.add_node(node_id, **after_apdg.node[other_node])
+                    before_apdg.add_node(node_id, **after_apdg.nodes[other_node])
 
                     # Add in-edges from after graph to before graph, we leave references to un-imported nodes dangling
                     # However, we also add the un-imported nodes to the to-visit list
@@ -102,11 +102,11 @@ class Marked_Merger(object):
             work_to_be_done = len(to_visit) > 0
 
         for node in before_apdg.nodes():
-            if 'color' in before_apdg.node[node].keys():
+            if 'color' in before_apdg.nodes[node].keys():
                 for edge in list(before_apdg.in_edges(nbunch=[node], keys=True)) \
                             + list(before_apdg.out_edges(nbunch=[node], keys=True)):
                     s, t, k = edge
-                    before_apdg[s][t][k]['color'] = before_apdg.node[node]['color']
+                    before_apdg[s][t][k]['color'] = before_apdg.nodes[node]['color']
 
         for node, other_node in label_map_ab.items():
             for edge in list(after_apdg.in_edges(nbunch=[other_node], keys=True)):

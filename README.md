@@ -159,7 +159,7 @@ For Commandline, this would look like so:
 
 This will change the number of concepts to match the number of surviving concepts.
 
-For convenience, we provide the final result of this process for all our subjects as `./out.zip` [here](https://liveuclac-my.sharepoint.com/:f:/g/personal/ucabpp1_ucl_ac_uk/EkNrHsAyWPZCkhOsXXvERmIBpiraNlREcEEO4keHUFdRhA?e=6vxyCs). Password: `Flexeme_data_2020`.
+For convenience, we provide the final result of this process for all our subjects as `./out.zip` [here](https://drive.proton.me/urls/9JFPGY7V6G#SdgO1hhrP4FA). Password: `Flexeme_data_2020`.
 
 ## 𝛿-PDG construction
 To demonstrate how we generate 𝛿-PDG, consider this snippet:
@@ -267,7 +267,7 @@ For example for Commandline
 [../flexeme] $ python3 ./Util/graph_evaluation_driver.py 10 wl Commandline
 ```
 
-For convenience, we provide the evaluation results as `./out.zip` [here](https://liveuclac-my.sharepoint.com/:f:/g/personal/ucabpp1_ucl_ac_uk/EkNrHsAyWPZCkhOsXXvERmIBpiraNlREcEEO4keHUFdRhA?e=6vxyCs). Password: `Flexeme_data_2020`.
+For convenience, we provide the evaluation results as `./out.zip` [here](https://drive.proton.me/urls/X24M2QRET0#QjZGicvgWOTw). Password: `Flexeme_data_2020`.
 
 The method to CSV mapping is as follows:
 

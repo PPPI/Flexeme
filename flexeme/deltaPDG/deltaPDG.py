@@ -1,11 +1,16 @@
 from typing import List, Tuple
 
+import logging
 import networkx as nx
 
 from flexeme.deltaPDG.Util.mark_pdgs import mark_pdg_nodes
 from flexeme.deltaPDG.Util.merge_marked_pdgs import Marked_Merger
 from flexeme.deltaPDG.Util.pygraph_util import read_graph_from_dot, obj_dict_to_networkx
 
+logging.basicConfig(level=logging.DEBUG,
+                    format='[%(asctime)s][%(name)s] %(levelname)s: %(message)s',
+                    datefmt='%Y-%m-%d %H:%M:%S',
+                    handlers=[logging.StreamHandler()])
 
 class deltaPDG(object):
     def __init__(self, base_pdg_location: str, m_fuzziness: int, n_fuzziness: int):
@@ -32,5 +37,11 @@ def quote_label(pdg: nx.Graph):
     pdg = pdg.copy()
     for node in pdg.nodes:
         label_value = pdg.nodes[node]['label']
-        pdg.nodes[node]['label'] = f'"{label_value}"'
+
+        if label_value.startswith('"') ^ label_value.endswith('"'):
+            logging.warning(f'Label {label_value} is not quoted correctly in node {node}.')
+
+        if not label_value.startswith('"') and not label_value.endswith('"'):
+            pdg.nodes[node]['label'] = '"' + label_value + '"'
+
     return pdg

@@ -92,7 +92,7 @@ a `git reset --hard <Last revision>`. With the project in the correct state, one
 Let's say we are recreating the data for **Commandline**, and are using WSL1 with Ubuntu to complete this task.
 From the root of the project one would first run:
 ```bash
-[../flexeme] $ python3 tangle_concerns/tangle_by_file.py Commandline
+[../flexeme] $ python3 tangle_concerns/tangle_by_file.py Commandline ./temp
 ```
 This should produce the file `./out/Commandline/Commandline_history_filtered_flat.json` which represents 
 all the valid intervals of commits w.r.t. our tangle criteria. Next, one would run:

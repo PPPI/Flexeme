@@ -68,8 +68,8 @@ def driver(times_, out_name_, projects_, worker_wrapper_, temp_dir_):
         n_workers = 1
         chunck_size = int(len(work_list) / n_workers)
         while chunck_size == 0:
-            n_workers -= 1
             chunck_size = int(len(work_list) / n_workers)
+            n_workers -= 1
         chuncked = [work_list[i:i + chunck_size] for i in range(0, len(work_list), chunck_size)]
 
         worker = worker_wrapper_(corpus, file_len_map, repository_name, occurrence_matrix, file_index_map, times_)

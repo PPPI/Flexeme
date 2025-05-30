@@ -26,6 +26,8 @@ Evaluation drivers are provided under `./Util/[cv/graph]_evaluation_driver.py`.
 
 We provide our evaluation analysis scripts under `./analysis` as a jupyter notebook.
 
+!!! Please note, when unpacking any archive, the code assumes that the archive is unpacked in the repository root and not under a folder that shares the zip filename. !!!
+
 ## Dependencies
 The project depends on the following python packages:
 

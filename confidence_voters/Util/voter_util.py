@@ -81,8 +81,14 @@ def call_graph_distance(graph, context):
     working_graph = nx.MultiGraph(call_graph)
 
     def voter(node, other):
-        region1_nodes = {context[k] for k in [node] if k in context.keys()}
-        region2_nodes = {context[k] for k in [other] if k in context.keys()}
+        if isinstance(node, dict):
+            region1_nodes = {context[k] for k in node['nodes'] if k in context.keys()}
+        else:
+            region1_nodes = {context[k] for k in [node] if k in context.keys()}
+        if isinstance(other, dict):
+            region2_nodes = {context[k] for k in other['nodes'] if k in context.keys()}
+        else:
+            region2_nodes = {context[k] for k in [other] if k in context.keys()}
 
         region1_hypernodes = list()
         region2_hypernodes = list()

@@ -168,6 +168,12 @@ def cluster_diffs(concepts, data, graph_location, file_length_map, occurrence_ma
     if edges_kept is not None:
         deltaPDG = remove_all_except(deltaPDG, edges_kept)
     context = get_context_from_nxgraph(deltaPDG)
+    try:
+        data_graph, _ = list(zip(*[(n, d['community']) for n, d in deltaPDG.nodes(data=True)
+                             if 'color' in d.keys() and d['color'] != 'orange'
+                             and 'community' in d.keys()]))
+    except ValueError:
+        return
     voters = [
         file_distance(file_length_map) if use_file_dist else None,
         call_graph_distance(deltaPDG, context) if use_call_distance else None,
@@ -176,6 +182,14 @@ def cluster_diffs(concepts, data, graph_location, file_length_map, occurrence_ma
         change_coupling(occurrence_matrix, file_index_map) if use_change_coupling else None,
     ]
     voters = [v for v in voters if v is not None]
+
+    for diff_region in data:
+        active_spans = [(span['start'], span['end']) for span in [diff_region['span_before'], diff_region['span_after']]
+                        if span['start'] != -1]
+        region_nodes = [n for n in deltaPDG.nodes if len(deltaPDG.nodes[n]['span']) > 0 and any([s <= int(
+            deltaPDG.nodes[n]['span'].split('-')[0]) <= e or s <= int(deltaPDG.nodes[n]['span'].split('-')[1]) <= e for
+                                                                                                 s, e in active_spans])]
+        diff_region['nodes'] = region_nodes
 
     n = len(data)
 

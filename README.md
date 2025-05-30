@@ -33,8 +33,8 @@ The project depends on the following python packages:
 jsonpickle==1.2    # For data loading and storage
 scipy>=1.3.1       # Used for the Hungarian algorithm when evaluating 3+ untangles
 tqdm>=4.38.0       # Used for progressbars
-networkx>=2.4      # Used for shortest-paths and general graph utils
-numpy>=1.17.3      # Used for matrix operations
+networkx<2.5       # Used for shortest-paths and general graph utils
+numpy<1.20.0       # Used for matrix operations
 rapidfuzz>=0.9.1   # Used for fuzzy string matching
 pygraphviz>=1.6    # Used as the main way to interact with .dot files
 pydot>=1.4.1       # Used as a fall-back method to read .dot files

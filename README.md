@@ -122,7 +122,7 @@ a final script:
 [../flexeme] $ python3 scan_and_clean_corpora.py Commandline
 ```
 
-For convenience, we provide the final result of this process for all our subjects as `./data.zip` [here](https://liveuclac-my.sharepoint.com/:f:/g/personal/ucabpp1_ucl_ac_uk/EkNrHsAyWPZCkhOsXXvERmIBpiraNlREcEEO4keHUFdRhA?e=6vxyCs). Password: `Flexeme_data_2020`.
+For convenience, we provide the final result of this process for all our subjects as `./data.zip` [here](https://drive.proton.me/urls/9JFPGY7V6G#SdgO1hhrP4FA). Password: `Flexeme_data_2020`.
 
 To generate the corpus needed to run the diff-regions baseline, one would use the scripts provided in `./confidence_voters/Util`.
 

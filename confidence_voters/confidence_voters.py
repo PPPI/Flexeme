@@ -87,9 +87,10 @@ def change_coupling(occurrence_matrix, file_index):
                 pass
         occurrence_profile = np.squeeze(np.asarray(occurrence_matrix[:, selected_idx].sum(axis=1)))
         try:
-            file1_count = occurrence_profile[file_index[file1]]
-            file2_count = occurrence_profile[file_index[file2]]
-            return min(file1_count, file2_count) / max(file1_count, file2_count) \
+            file1_count = occurrence_matrix.sum(axis=1)[file_index[file1]]
+            file2_count = occurrence_matrix.sum(axis=1)[file_index[file2]]
+            cochange_count = occurrence_profile[file_index[file1]]
+            return cochange_count / max(file1_count, file2_count) \
                 if max(file1_count, file2_count) > 0 else .0
         except KeyError:
             return .0

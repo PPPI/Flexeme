@@ -108,13 +108,12 @@ def tangle_by_file(subject, temp_loc):
                 index += 1
                 if len(set(msg.upper().split()).intersection(KEYWORDS)) <= 1:
                     chain = [sha]
-                    for offset in range(1, up_to_concerns):
+                    for offset in range(0, up_to_concerns):
                         try:
                             new_sha, new_date, new_msg = candidates[index + offset]
                             if new_date - date <= datetime.timedelta(days=days) \
                                     and len(set(new_msg.upper().split()).intersection(KEYWORDS)) <= 1:
                                 chain.append(new_sha)
-                                index += 1
                             else:
                                 break
                         except IndexError:

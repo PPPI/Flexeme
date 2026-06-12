@@ -78,11 +78,11 @@ def closure_of_DU_on_diff(graph):
 
 def validate(files: List[str], times, repository_name):
     n_workers = 4
-    chunck_size = int(len(files) / n_workers)
-    while chunck_size == 0:
+    chunk_size = int(len(files) / n_workers)
+    while chunk_size == 0:
         n_workers -= 1
-        chunck_size = int(len(files) / n_workers)
-    chuncked = [files[i:i + chunck_size] for i in range(0, len(files), chunck_size)]
+        chunk_size = int(len(files) / n_workers)
+    chunked = [files[i:i + chunk_size] for i in range(0, len(files), chunk_size)]
 
     def worker(work):
         for graph_location in tqdm(work, leave=False):
@@ -121,7 +121,7 @@ def validate(files: List[str], times, repository_name):
                     time_) + '\n')
 
     threads = []
-    for work in chuncked:
+    for work in chunked:
         t = Thread(target=worker, args=(work,))
         threads.append(t)
         t.start()

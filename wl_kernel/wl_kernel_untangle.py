@@ -71,11 +71,11 @@ def deltaPDG_to_list_of_Graphs(delta: nx.MultiDiGraph, khop_k: int = 1) -> Tuple
 def validate(files: List[str], times, k_hop, repository_name, edges_kept="all",
              with_data: bool = True, with_call: bool = True, with_name: bool = True, suffix="raw"):
     n_workers = 1
-    chunck_size = int(len(files) / n_workers)
-    while (chunck_size == 0) and (n_workers > 1):
+    chunk_size = int(len(files) / n_workers)
+    while (chunk_size == 0) and (n_workers > 1):
         n_workers -= 1
-        chunck_size = int(len(files) / n_workers)
-    chuncked = [files[i:i + chunck_size] for i in range(0, len(files), chunck_size)]
+        chunk_size = int(len(files) / n_workers)
+    chunked = [files[i:i + chunk_size] for i in range(0, len(files), chunk_size)]
 
     def worker(work):
         for graph_location in tqdm(work, leave=False):
@@ -149,7 +149,7 @@ def validate(files: List[str], times, k_hop, repository_name, edges_kept="all",
                 f.write(chain + ',' + str(q) + ',' + str(acc) + ',' + str(overlap) + ',' + str(time_) + '\n')
 
     threads = []
-    for work in chuncked:
+    for work in chunked:
         t = Thread(target=worker, args=(work,))
         threads.append(t)
         t.start()

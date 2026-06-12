@@ -51,11 +51,11 @@ if __name__ == '__main__':
     all_graph_locations = get_pattern_paths('*merged.dot', os.path.join('.', 'data', 'corpora', corpus_name))
     os.makedirs(os.path.join('.', 'data', 'corpora_clean', corpus_name), exist_ok=True)
     n_workers = 32
-    chunck_size = int(len(all_graph_locations) / n_workers)
-    chuncked = [all_graph_locations[i:i + chunck_size] for i in range(0, len(all_graph_locations), chunck_size)]
+    chunk_size = int(len(all_graph_locations) / n_workers)
+    chunked = [all_graph_locations[i:i + chunk_size] for i in range(0, len(all_graph_locations), chunk_size)]
 
     threads = []
-    for work in chuncked:
+    for work in chunked:
         t = Thread(target=worker, args=(work, corpus_name))
         threads.append(t)
         t.start()

@@ -141,8 +141,8 @@ if __name__ == '__main__':
         with open(json_location, 'w') as f:
             f.write(json.dumps(list_to_tangle))
 
-    chunck_size = int(len(list_to_tangle) / n_workers)
-    list_to_tangle = [list_to_tangle[i:i + chunck_size] for i in range(0, len(list_to_tangle), chunck_size)]
+    chunk_size = int(len(list_to_tangle) / n_workers)
+    list_to_tangle = [list_to_tangle[i:i + chunk_size] for i in range(0, len(list_to_tangle), chunk_size)]
 
     threads = []
     id_ = int(sys.argv[4])
